@@ -21,21 +21,31 @@ public class Player : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
+        GetInput();
+        MovePlayer();
+        CheckPlayerPosition();
+
+    }
+
+    void GetInput() {
         //transform.Translate(Vector3.right * Time.deltaTime * speed);
         inputHorizontal = Input.GetAxis("Horizontal");
         inputVertical = Input.GetAxis("Vertical");
+    }
 
+    void MovePlayer() {
         //transform.Translate(Vector3.right * inputHorizontal * Time.deltaTime * speed);
         //transform.Translate(Vector3.up * inputVertical * Time.deltaTime * speed);
         transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
+    }
+    void CheckPlayerPosition() {
+        if (transform.position.x > 11.29f) {
 
-        if (transform.position.x > 10) {
+            transform.position = new Vector3(-11.29f, transform.position.y, 0);
 
-            transform.position = new Vector3(-10, transform.position.y, 0);
+        } else if (transform.position.x < -11.29f) {
 
-        } else if (transform.position.x < -10) {
-
-            transform.position = new Vector3(10, transform.position.y, 0);
+            transform.position = new Vector3(11.29f, transform.position.y, 0);
         }
 
         if (transform.position.y > 5.5f) {
@@ -44,8 +54,11 @@ public class Player : MonoBehaviour {
         } else if (transform.position.y < -3.5f) {
 
             transform.position = new Vector3(transform.position.x, -3.5f, 0);
+
+            //NOTE: can alternatively use Mathf.Clamp to clamp the y position
+            //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 5.5f), 0);
+            //Can use this in lieu of the 2 if/else statements above
         }
-
-
     }
+
 }
