@@ -35,11 +35,12 @@ public class Player : MonoBehaviour {
         CheckPlayerPosition();
 
         if(Input.GetKeyDown(KeyCode.Space) && Time.time > nextFireMark) {
-            //Debug.Log("Fire!");
-            spawnPosition = new Vector3(transform.position.x, transform.position.y + .8f, 0);
-            Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
-            nextFireMark = Time.time + fireDelay;
+            FireLaser();
         }
+
+    }
+
+    void FireLaser() {
 
     }
 
