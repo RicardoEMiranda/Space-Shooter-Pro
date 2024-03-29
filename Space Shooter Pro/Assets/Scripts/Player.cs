@@ -10,6 +10,9 @@ public class Player : MonoBehaviour {
     public float inputHorizontal;
     public float inputVertical;
 
+    [SerializeField]
+    private GameObject laserPrefab;
+
     // Start is called before the first frame update
     void Start() {
 
@@ -24,6 +27,11 @@ public class Player : MonoBehaviour {
         GetInput();
         MovePlayer();
         CheckPlayerPosition();
+
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            //Debug.Log("Fire!");
+            Instantiate(laserPrefab, transform.position, Quaternion.identity);
+        }
 
     }
 

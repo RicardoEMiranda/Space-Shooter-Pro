@@ -313,6 +313,8 @@ MonoBehaviour:
   speed: 3.5
   inputHorizontal: 0
   inputVertical: 0
+  laserPrefab: {fileID: 8873853967516485504, guid: b3df0ecdfb2ff4547ac7a3bb60ff3ed9,
+    type: 3}
 --- !u!1 &444241919
 GameObject:
   m_ObjectHideFlags: 0
