@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
 
     public float inputHorizontal;
     public float inputVertical;
+    private Vector3 spawnPosition;
 
     [SerializeField]
     private GameObject laserPrefab;
@@ -30,7 +31,8 @@ public class Player : MonoBehaviour {
 
         if(Input.GetKeyDown(KeyCode.Space)) {
             //Debug.Log("Fire!");
-            Instantiate(laserPrefab, transform.position, Quaternion.identity);
+            spawnPosition = new Vector3(transform.position.x, transform.position.y + .8f, 0);
+            Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
         }
 
     }
