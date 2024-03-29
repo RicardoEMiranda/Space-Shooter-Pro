@@ -14,11 +14,16 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private GameObject laserPrefab;
 
+    [SerializeField]
+    public float fireDelay = .25f;
+    public float nextFireMark;
+
     // Start is called before the first frame update
     void Start() {
 
         //take current position and set equal to (0,0,0)
         transform.position = new Vector3(0, 0, 0);
+        nextFireMark = 0;
 
     }
 
@@ -29,10 +34,11 @@ public class Player : MonoBehaviour {
         MovePlayer();
         CheckPlayerPosition();
 
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Space) && Time.time > nextFireMark) {
             //Debug.Log("Fire!");
             spawnPosition = new Vector3(transform.position.x, transform.position.y + .8f, 0);
             Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
+            nextFireMark = Time.time + fireDelay;
         }
 
     }
