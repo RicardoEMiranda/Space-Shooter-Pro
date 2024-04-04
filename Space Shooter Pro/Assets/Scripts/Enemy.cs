@@ -31,8 +31,30 @@ public class Enemy : MonoBehaviour {
 
     }
 
+    private void OnTriggerEnter(Collider other) {
+        //Debug.Log("Hit! " + other.transform.name);
+
+        //if other is Player
+        //damage Player
+        //Destroy this object
+        if(other.transform.tag == "Player") {
+            //damage Player
+            Destroy(this.gameObject);
+        }
+
+        //if other is Laser
+        //Destroy this object
+        if(other.transform.tag == "Laser") {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+
+    }
+
     void ResetPosition() {
         xStartingPosition = Random.Range(-10f, 10f);
         transform.position = new Vector3(xStartingPosition, yStartingPosition, 0);
     }
+
+    
 }

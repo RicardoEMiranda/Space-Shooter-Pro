@@ -20,4 +20,11 @@ public class Lazer : MonoBehaviour {
             Destroy(this.gameObject);
         }
     }
+
+    private void OnTriggerEnter(Collider other) {
+        
+        if(other.transform.tag == "Enemy") {
+            //Destroy(this.gameObject);
+        }
+    }
 }
