@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
     [SerializeField]
     public float fireDelay = .2f;
     public float nextFireMark;
+    private float health = 3;
 
     // Start is called before the first frame update
     void Start() {
@@ -38,6 +39,15 @@ public class Player : MonoBehaviour {
             FireLaser();
         }
 
+    }
+
+    public void TakeDamage() {
+        health -= 1;
+        //Debug.Log("Health: " + health);
+
+        if(health < 1) {
+            Destroy(this.gameObject);
+        }
     }
 
     void FireLaser() {
