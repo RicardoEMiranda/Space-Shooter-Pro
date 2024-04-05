@@ -16,7 +16,7 @@ public class Player : MonoBehaviour {
     private GameObject laserPrefab;
 
     [SerializeField]
-    public float fireDelay = .2f;
+    public float fireDelay = .15f;
     public float nextFireMark;
     private float health = 3;
 
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour {
     }
 
     void FireLaser() {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFireMark) {
+        if (Input.GetKeyDown(KeyCode.Return) && Time.time > nextFireMark) {
             //Debug.Log("Fire!");
             spawnPosition = new Vector3(transform.position.x +.8f, transform.position.y, 0);
             Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
@@ -80,12 +80,12 @@ public class Player : MonoBehaviour {
             transform.position = new Vector3(-8.8f, transform.position.y, 0);
         }
 
-        if (transform.position.y > 5.5f) {
+        if (transform.position.y > 7.55f) {
 
-            transform.position = new Vector3(transform.position.x, 5.5f, 0);
-        } else if (transform.position.y < -3.5f) {
+            transform.position = new Vector3(transform.position.x, -5.55f, 0);
+        } else if (transform.position.y < -5.55f) {
 
-            transform.position = new Vector3(transform.position.x, -3.5f, 0);
+            transform.position = new Vector3(transform.position.x, 7.55f, 0);
 
             //NOTE: can alternatively use Mathf.Clamp to clamp the y position
             //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 5.5f), 0);
