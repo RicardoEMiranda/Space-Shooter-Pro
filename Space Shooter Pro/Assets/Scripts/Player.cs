@@ -5,11 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
     [SerializeField]
-    private float speed = 3.5f;
+    private float speed = 5f;
 
     public float inputHorizontal;
     public float inputVertical;
     private Vector3 spawnPosition;
+    private Vector3 startPosition;
 
     [SerializeField]
     private GameObject laserPrefab;
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour {
         //take current position and set equal to (0,0,0)
         transform.position = new Vector3(0, 0, 0);
         nextFireMark = 0;
+        startPosition = new Vector3(-8.8f, 0, 0);
+        transform.position = startPosition;
 
     }
 
@@ -34,10 +37,7 @@ public class Player : MonoBehaviour {
         GetInput();
         MovePlayer();
         CheckPlayerPosition();
-
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            FireLaser();
-        }
+        FireLaser();
 
     }
 
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour {
     void FireLaser() {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFireMark) {
             //Debug.Log("Fire!");
-            spawnPosition = new Vector3(transform.position.x, transform.position.y + .8f, 0);
+            spawnPosition = new Vector3(transform.position.x +.8f, transform.position.y, 0);
             Instantiate(laserPrefab, spawnPosition, Quaternion.identity);
             nextFireMark = Time.time + fireDelay;
         }
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour {
     void GetInput() {
         //transform.Translate(Vector3.right * Time.deltaTime * speed);
         inputHorizontal = Input.GetAxis("Horizontal");
-        inputVertical = Input.GetAxis("Vertical");
+        inputVertical = Input.GetAxis("Vertical");  
     }
 
     void MovePlayer() {
@@ -71,13 +71,13 @@ public class Player : MonoBehaviour {
         transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
     }
     void CheckPlayerPosition() {
-        if (transform.position.x > 11.29f) {
+        if (transform.position.x > 7.5f) {
 
-            transform.position = new Vector3(-11.29f, transform.position.y, 0);
+            transform.position = new Vector3(7.5f, transform.position.y, 0);
 
-        } else if (transform.position.x < -11.29f) {
+        } else if (transform.position.x < -8.8f) {
 
-            transform.position = new Vector3(11.29f, transform.position.y, 0);
+            transform.position = new Vector3(-8.8f, transform.position.y, 0);
         }
 
         if (transform.position.y > 5.5f) {
