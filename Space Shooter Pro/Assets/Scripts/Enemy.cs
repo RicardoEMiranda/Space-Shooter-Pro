@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour {
         //if enemy position is below viewable screen, respawn at the top of the screen at a random x position
         if(transform.position.y < -6.5) {
             //reset start position
-            ResetPosition();
+            //ResetPosition();
         }
 
     }
