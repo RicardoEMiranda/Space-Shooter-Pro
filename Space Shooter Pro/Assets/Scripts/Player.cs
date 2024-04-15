@@ -31,6 +31,8 @@ public class Player : MonoBehaviour {
     public float nextFireMark;
     private float health = 3;
 
+    private SpawnManager spawnManager;
+
     // Start is called before the first frame update
     void Start() {
 
@@ -39,6 +41,11 @@ public class Player : MonoBehaviour {
         nextFireMark = 0;
         startPosition = new Vector3(0, -3.5f, 0);
         transform.position = startPosition;
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
+        if(spawnManager == null) {
+            Debug.Log("There is no Spawn Manager in the game scene.");
+        }
 
     }
 
@@ -57,6 +64,7 @@ public class Player : MonoBehaviour {
         //Debug.Log("Health: " + health);
 
         if(health < 1) {
+            spawnManager.StopSpawning();
             Destroy(this.gameObject);
         }
     }

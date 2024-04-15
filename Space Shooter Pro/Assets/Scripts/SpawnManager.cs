@@ -10,6 +10,8 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField]
     private GameObject enemyContainer;
 
+    private bool continueSpawning = true;
+
 
     // Start is called before the first frame update
     void Start() {
@@ -33,7 +35,7 @@ public class SpawnManager : MonoBehaviour {
         //yield return new WaitForSeconds(5);
         //do this here after 5 seconds
 
-        while (true) {
+        while (continueSpawning) {
             Vector3 spawnPosition = new Vector3(Random.Range(-8f, 8f), 7, 0);
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = enemyContainer.transform;
@@ -42,6 +44,9 @@ public class SpawnManager : MonoBehaviour {
         }
 
 
+    }
 
+    public void StopSpawning() {
+        continueSpawning = false;
     }
 }
