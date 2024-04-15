@@ -24,12 +24,7 @@ public class Player : MonoBehaviour {
     private Vector3 startPosition;
 
     [SerializeField]
-    private GameObject centerLaserPrefab;
-    [SerializeField]
-    private GameObject rightLaserPrefab;
-    [SerializeField]
-    private GameObject leftLaserPrefab;
-
+    private GameObject laserPrefab;
 
     [SerializeField]
     public float fireDelay = .15f;
@@ -72,31 +67,12 @@ public class Player : MonoBehaviour {
 
             //Center Lazers
             spawnPosition1 = new Vector3(transform.position.x, transform.position.y + .8f, 0);
-            spawnPosition2 = new Vector3(transform.position.x + .25f, transform.position.y + .8f, 0);
-            spawnPosition3 = new Vector3(transform.position.x - .25f, transform.position.y + .8f, 0);
+            spawnPosition2 = new Vector3(transform.position.x + 1.25f, transform.position.y + .8f, 0);
+            spawnPosition3 = new Vector3(transform.position.x - 1.25f, transform.position.y + .8f, 0);
 
-            Instantiate(centerLaserPrefab, spawnPosition1, Quaternion.identity);
-            Instantiate(centerLaserPrefab, spawnPosition2, Quaternion.identity);
-            Instantiate(centerLaserPrefab, spawnPosition3, Quaternion.identity);
-
-            //Right Side Lazers
-            spawnPosition4 = new Vector3(transform.position.x + .75f, transform.position.y + .8f, 0);
-            spawnPosition5 = new Vector3(transform.position.x + 1.0f, transform.position.y + .8f, 0);
-            spawnPosition6 = new Vector3(transform.position.x + 1.25f, transform.position.y + .8f, 0);
-
-            Instantiate(rightLaserPrefab, spawnPosition4, Quaternion.identity);
-            Instantiate(rightLaserPrefab, spawnPosition5, Quaternion.identity);
-            Instantiate(rightLaserPrefab, spawnPosition6, Quaternion.identity);
-
-            //Left Side Lazers
-            spawnPosition7 = new Vector3(transform.position.x - .75f, transform.position.y + .8f, 0);
-            spawnPosition8 = new Vector3(transform.position.x - 1.0f, transform.position.y + .8f, 0);
-            spawnPosition9 = new Vector3(transform.position.x - 1.25f, transform.position.y + .8f, 0);
-
-            Instantiate(leftLaserPrefab, spawnPosition7, Quaternion.identity);
-            Instantiate(leftLaserPrefab, spawnPosition8, Quaternion.identity);
-            Instantiate(leftLaserPrefab, spawnPosition9, Quaternion.identity);
-
+            Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
+            Instantiate(laserPrefab, spawnPosition2, Quaternion.identity);
+            Instantiate(laserPrefab, spawnPosition3, Quaternion.identity);
 
             nextFireMark = Time.time + fireDelay;
         }
