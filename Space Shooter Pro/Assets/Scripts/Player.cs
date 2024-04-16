@@ -75,8 +75,8 @@ public class Player : MonoBehaviour {
 
             //Center Lazers
             spawnPosition1 = new Vector3(transform.position.x, transform.position.y + .8f, 0);
-            spawnPosition2 = new Vector3(transform.position.x + 1.25f, transform.position.y + .8f, 0);
-            spawnPosition3 = new Vector3(transform.position.x - 1.25f, transform.position.y + .8f, 0);
+            spawnPosition2 = new Vector3(transform.position.x + 1.25f, transform.position.y, 0);
+            spawnPosition3 = new Vector3(transform.position.x - 1.25f, transform.position.y, 0);
 
             Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
             Instantiate(laserPrefab, spawnPosition2, Quaternion.identity);
