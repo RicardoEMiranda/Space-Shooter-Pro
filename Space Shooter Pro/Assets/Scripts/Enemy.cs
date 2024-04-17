@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour {
 
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter2D(Collider2D other) {
         //Debug.Log("Hit! " + other.transform.name);
 
         //if other is Player
@@ -43,7 +43,13 @@ public class Enemy : MonoBehaviour {
             Player player = other.transform.GetComponent<Player>();
 
             //null check that the Player componet on the other.transform existis
+            if(player == null) {
+                Debug.Log("No Player Object Detected");
+
+            }
+
             if(player != null) {
+                Debug.Log("Player collision detected.");
                 player.TakeDamage();
             }
             
