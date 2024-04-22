@@ -74,13 +74,13 @@ public class Player : MonoBehaviour {
             //Debug.Log("Fire!");
 
             //Center Lazers
-            spawnPosition1 = new Vector3(transform.position.x, transform.position.y + .8f, 0);
-            spawnPosition2 = new Vector3(transform.position.x + 1.25f, transform.position.y, 0);
-            spawnPosition3 = new Vector3(transform.position.x - 1.25f, transform.position.y, 0);
+            spawnPosition1 = new Vector3(transform.position.x, transform.position.y, 0);
+            //spawnPosition2 = new Vector3(transform.position.x + 1.05f, transform.position.y, 0);
+            //spawnPosition3 = new Vector3(transform.position.x - 1.05f, transform.position.y, 0);
 
             Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
-            Instantiate(laserPrefab, spawnPosition2, Quaternion.identity);
-            Instantiate(laserPrefab, spawnPosition3, Quaternion.identity);
+            //Instantiate(laserPrefab, spawnPosition2, Quaternion.identity);
+            //Instantiate(laserPrefab, spawnPosition3, Quaternion.identity);
 
             nextFireMark = Time.time + fireDelay;
         }
