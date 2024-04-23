@@ -10,26 +10,19 @@ public class Player : MonoBehaviour {
     public float inputHorizontal;
     public float inputVertical;
     private Vector3 spawnPosition1;
-    private Vector3 spawnPosition2;
-    private Vector3 spawnPosition3;
-
-    private Vector3 spawnPosition4;
-    private Vector3 spawnPosition5;
-    private Vector3 spawnPosition6;
-
-    private Vector3 spawnPosition7;
-    private Vector3 spawnPosition8;
-    private Vector3 spawnPosition9;
 
     private Vector3 startPosition;
 
     [SerializeField]
-    private GameObject laserPrefab;
+    private GameObject laserPrefab, trippleShotPrefab;
 
     [SerializeField]
     public float fireDelay = .15f;
     public float nextFireMark;
     private float health = 3;
+
+    [SerializeField]
+    private bool trippleShotActive;
 
     private SpawnManager spawnManager;
 
@@ -75,12 +68,13 @@ public class Player : MonoBehaviour {
 
             //Center Lazers
             spawnPosition1 = new Vector3(transform.position.x, transform.position.y, 0);
-            //spawnPosition2 = new Vector3(transform.position.x + 1.05f, transform.position.y, 0);
-            //spawnPosition3 = new Vector3(transform.position.x - 1.05f, transform.position.y, 0);
-
-            Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
-            //Instantiate(laserPrefab, spawnPosition2, Quaternion.identity);
-            //Instantiate(laserPrefab, spawnPosition3, Quaternion.identity);
+            
+            if(trippleShotActive) {
+                Instantiate(trippleShotPrefab, spawnPosition1, Quaternion.identity);
+            } else {
+                Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
+            }
+            
 
             nextFireMark = Time.time + fireDelay;
         }

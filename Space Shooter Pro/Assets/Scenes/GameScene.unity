@@ -426,8 +426,10 @@ MonoBehaviour:
   inputVertical: 0
   laserPrefab: {fileID: 2202357473226561646, guid: d1c9281a00ec7bb458005d319b0c4766,
     type: 3}
+  trippleShotPrefab: {fileID: 0}
   fireDelay: 0.15
   nextFireMark: 0
+  trippleShotActive: 0
 --- !u!1 &444241919
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,8 +559,11 @@ MonoBehaviour:
   inputVertical: 0
   laserPrefab: {fileID: 2202357473226561646, guid: d1c9281a00ec7bb458005d319b0c4766,
     type: 3}
+  trippleShotPrefab: {fileID: 1101244226030413214, guid: cfff35f0e7459304a998eeb2690cbaf1,
+    type: 3}
   fireDelay: 0.15
   nextFireMark: 0
+  trippleShotActive: 0
 --- !u!50 &1010685425
 Rigidbody2D:
   serializedVersion: 4
