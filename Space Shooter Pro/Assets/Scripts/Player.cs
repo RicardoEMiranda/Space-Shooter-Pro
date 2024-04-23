@@ -114,4 +114,16 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void TrippleShotActive() {
+        trippleShotActive = true;
+        StartCoroutine(PowerDownTrippleShot());
+        //Start Couroutine to countdown/powerdown TrippleShot powerup after 5 seconds
+
+    }
+
+    IEnumerator PowerDownTrippleShot() {
+        yield return new WaitForSeconds(5);
+        trippleShotActive = false;
+    }
+
 }
