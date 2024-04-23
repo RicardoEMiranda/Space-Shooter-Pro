@@ -33,7 +33,11 @@ public class Powerup_TrippleShot : MonoBehaviour {
 
             //Communicate with Player Object to activate tripple shot (call TrippleShotActive() method)
             Player player = other.transform.GetComponent<Player>();
-            player.TrippleShotActive();
+
+            if(player != null) {
+                player.TrippleShotActive();
+            }
+            
             Destroy(this.gameObject);
         }
 
