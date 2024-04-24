@@ -92,21 +92,21 @@ public class Player : MonoBehaviour {
         transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
     }
     void CheckPlayerPosition() {
-        if (transform.position.x > 11f) {
+        if (transform.position.x > 7.4f) {
 
-            transform.position = new Vector3(-11f, transform.position.y, 0);
+            transform.position = new Vector3(-7.4f, transform.position.y, 0);
 
-        } else if (transform.position.x < -11f) {
+        } else if (transform.position.x < -7.4f) {
 
-            transform.position = new Vector3(11f, transform.position.y, 0);
+            transform.position = new Vector3(7.4f, transform.position.y, 0);
         }
 
-        if (transform.position.y > 3.5f) {
+        if (transform.position.y > 5.5f) {
 
-            transform.position = new Vector3(transform.position.x, 3.5f, 0);
-        } else if (transform.position.y < -3.65f) {
+            transform.position = new Vector3(transform.position.x, 5.5f, 0);
+        } else if (transform.position.y < -5.0f) {
 
-            transform.position = new Vector3(transform.position.x, -3.65f, 0);
+            transform.position = new Vector3(transform.position.x, -5.0f, 0);
 
             //NOTE: can alternatively use Mathf.Clamp to clamp the y position
             //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 5.5f), 0);

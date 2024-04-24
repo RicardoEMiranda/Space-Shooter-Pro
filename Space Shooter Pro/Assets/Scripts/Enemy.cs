@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour {
         transform.Translate(Vector3.down * speed * Time.deltaTime);
 
         //if enemy position is below viewable screen, respawn at the top of the screen at a random x position
-        if(transform.position.y < -6.5) {
+        if(transform.position.y < -10f) {
             //reset start position
             ResetPosition();
         }
@@ -64,8 +64,8 @@ public class Enemy : MonoBehaviour {
     }
 
     void ResetPosition() {
-        xStartingPosition = Random.Range(-10f, 10f);
-        yStartingPosition = 8.5f;
+        xStartingPosition = Random.Range(-6f, 6f);
+        yStartingPosition = 10f;
         transform.position = new Vector3(xStartingPosition, yStartingPosition, 0);
     }
 
