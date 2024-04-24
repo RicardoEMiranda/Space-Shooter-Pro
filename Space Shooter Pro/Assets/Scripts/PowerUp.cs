@@ -41,19 +41,23 @@ public class PowerUp : MonoBehaviour {
 
                 //if powerUp ID == 0
                 //if powerUp ID ==1, then call player.PowerUpSpeed()
+                switch (powerUpID) {
+                    case 0:
+                        player.TrippleShotActive();
+                        break;
+                    case 1:
+                        player.SpeedPowerUpActive();
+                        break;
+                    case 2:
+                        player.ShieldActive();
+                        break;
+                    default:
+                        Debug.Log("Warning, check Power Up IDs...");
+                        break;
 
-                if(powerUpID == 0) {
-                    player.TrippleShotActive();
-                } else if (powerUpID ==1) {
-                    player.SpeedPowerUpActive();
-                }  else if (powerUpID ==2) {
-                    player.ShieldActive();
                 }
-               
-
-               
             }
-            
+
             Destroy(this.gameObject);
         }
 
