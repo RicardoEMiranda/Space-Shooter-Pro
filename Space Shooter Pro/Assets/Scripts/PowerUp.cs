@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Powerup_TrippleShot : MonoBehaviour {
+public class PowerUp : MonoBehaviour {
 
     [SerializeField]
     private float speed = 3f;
+
+    [SerializeField]
+    private int powerUpID;
 
     // Start is called before the first frame update
     void Start() {
@@ -35,7 +38,20 @@ public class Powerup_TrippleShot : MonoBehaviour {
             Player player = other.transform.GetComponent<Player>();
 
             if(player != null) {
-                player.TrippleShotActive();
+
+                //if powerUp ID == 0
+                //if powerUp ID ==1, then call player.PowerUpSpeed()
+
+                if(powerUpID == 0) {
+                    player.TrippleShotActive();
+                } else if (powerUpID ==1) {
+                    player.SpeedPowerUpActive();
+                }  else if (powerUpID ==2) {
+                    player.ShieldActive();
+                }
+               
+
+               
             }
             
             Destroy(this.gameObject);

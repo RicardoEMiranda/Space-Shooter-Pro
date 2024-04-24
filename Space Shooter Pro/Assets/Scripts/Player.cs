@@ -24,6 +24,9 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private bool trippleShotActive;
 
+    [SerializeField]
+    private bool shieldActive = false;
+
     private SpawnManager spawnManager;
 
     // Start is called before the first frame update
@@ -53,10 +56,13 @@ public class Player : MonoBehaviour {
     }
 
     public void TakeDamage() {
-        health -= 1;
-        //Debug.Log("Health: " + health);
+        if (shieldActive == false) {
+            health -= 1;
+            Debug.Log("Health: " + health);
+        }
 
-        if(health < 1) {
+
+        if (health < 1) {
             spawnManager.StopSpawning();
             Destroy(this.gameObject);
         }
@@ -119,6 +125,28 @@ public class Player : MonoBehaviour {
         StartCoroutine(PowerDownTrippleShot());
         //Start Couroutine to countdown/powerdown TrippleShot powerup after 5 seconds
 
+    }
+
+    public void SpeedPowerUpActive() {
+        speed = 16f;
+        StartCoroutine(PowerDownSpeed());
+    }
+
+    public void ShieldActive() {
+        shieldActive = true;
+        StartCoroutine(PowerDownShield());
+
+    }
+
+    IEnumerator PowerDownShield() {
+
+        yield return new WaitForSeconds(5);
+        shieldActive = false;
+    }
+
+    IEnumerator PowerDownSpeed() {
+        yield return new WaitForSeconds(5);
+        speed = 8f;
     }
 
     IEnumerator PowerDownTrippleShot() {
