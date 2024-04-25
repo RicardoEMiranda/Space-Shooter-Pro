@@ -32,6 +32,9 @@ public class Player : MonoBehaviour {
 
     private SpawnManager spawnManager;
 
+    [SerializeField]
+    private GameObject shield;
+
     // Start is called before the first frame update
     void Start() {
 
@@ -151,6 +154,7 @@ public class Player : MonoBehaviour {
 
     public void ShieldActive() {
         shieldActive = true;
+        shield.SetActive(true);
         StartCoroutine(PowerDownShield());
 
     }
@@ -159,6 +163,7 @@ public class Player : MonoBehaviour {
 
         yield return new WaitForSeconds(5);
         shieldActive = false;
+        shield.SetActive(false);
     }
 
     IEnumerator PowerDownSpeed() {
