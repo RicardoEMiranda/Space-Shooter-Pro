@@ -6,9 +6,12 @@ public class Player : MonoBehaviour {
 
     [SerializeField]
     private float speed = 8f;
+    private float mouseSensitivity = 48;
 
     public float inputHorizontal;
     public float inputVertical;
+    public float mouseX;
+    public float mouseY;
     private Vector3 spawnPosition1;
 
     private Vector3 startPosition;
@@ -89,13 +92,26 @@ public class Player : MonoBehaviour {
     void GetInput() {
         //transform.Translate(Vector3.right * Time.deltaTime * speed);
         inputHorizontal = Input.GetAxis("Horizontal");
-        inputVertical = Input.GetAxis("Vertical");  
+        inputVertical = Input.GetAxis("Vertical");
+
+        //Input for Mouse Movement as input
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
     }
 
     void MovePlayer() {
         //transform.Translate(Vector3.right * inputHorizontal * Time.deltaTime * speed);
         //transform.Translate(Vector3.up * inputVertical * Time.deltaTime * speed);
-        transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
+
+        if(Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) >0 )  {
+            //if mouse is being used for player control, use mouse inputs to move the player
+            //Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
+            transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity);
+        } else {
+            //if mouse is not being used for player control, use the keyboard arrow inputs and move player using those inputs
+            transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
+        }
+
     }
     void CheckPlayerPosition() {
         if (transform.position.x > 7.4f) {
@@ -129,6 +145,7 @@ public class Player : MonoBehaviour {
 
     public void SpeedPowerUpActive() {
         speed = 16f;
+        mouseSensitivity += 48;
         StartCoroutine(PowerDownSpeed());
     }
 
@@ -147,6 +164,7 @@ public class Player : MonoBehaviour {
     IEnumerator PowerDownSpeed() {
         yield return new WaitForSeconds(5);
         speed = 8f;
+        mouseSensitivity = 48;
     }
 
     IEnumerator PowerDownTrippleShot() {
