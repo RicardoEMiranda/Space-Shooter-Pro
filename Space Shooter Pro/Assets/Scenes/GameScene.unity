@@ -421,19 +421,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851d433e29da6534f9d09fa83b03a125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  inputHorizontal: 0
-  inputVertical: 0
-  mouseX: 0
-  mouseY: 0
   laserPrefab: {fileID: 2202357473226561646, guid: d1c9281a00ec7bb458005d319b0c4766,
     type: 3}
   trippleShotPrefab: {fileID: 0}
+  shield: {fileID: 0}
+  canvas: {fileID: 0}
+  speed: 8
   fireDelay: 0.15
-  nextFireMark: 0
+  mouseSensitivity: 48
+  score: 0
+  health: 3
   trippleShotActive: 0
   shieldActive: 0
-  shield: {fileID: 0}
 --- !u!1 &275493542
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +497,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 267, y: -34}
+  m_AnchoredPosition: {x: 267, y: -35}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &351332607
@@ -715,6 +714,7 @@ GameObject:
   - component: {fileID: 721104874}
   - component: {fileID: 721104873}
   - component: {fileID: 721104872}
+  - component: {fileID: 721104876}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -803,6 +803,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &721104876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721104871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ab2655a35175d344b3a9315f0d970e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 351332607}
 --- !u!1 &858231464
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,20 +914,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851d433e29da6534f9d09fa83b03a125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  inputHorizontal: 0
-  inputVertical: 0
-  mouseX: 0
-  mouseY: 0
   laserPrefab: {fileID: 2202357473226561646, guid: d1c9281a00ec7bb458005d319b0c4766,
     type: 3}
   trippleShotPrefab: {fileID: 1101244226030413214, guid: cfff35f0e7459304a998eeb2690cbaf1,
     type: 3}
+  shield: {fileID: 1377598756}
+  canvas: {fileID: 721104871}
+  speed: 8
   fireDelay: 0.15
-  nextFireMark: 0
+  mouseSensitivity: 48
+  score: 0
+  health: 3
   trippleShotActive: 0
   shieldActive: 0
-  shield: {fileID: 1377598756}
 --- !u!50 &1010685425
 Rigidbody2D:
   serializedVersion: 4

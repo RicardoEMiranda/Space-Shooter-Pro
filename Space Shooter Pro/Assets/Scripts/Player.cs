@@ -1,45 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
     [SerializeField]
-    private float speed = 8f;
-    private float mouseSensitivity = 48;
+    private GameObject laserPrefab, trippleShotPrefab, shield, canvas;
 
-    public float inputHorizontal;
-    public float inputVertical;
-    public float mouseX;
-    public float mouseY;
+    [SerializeField]
+    private float speed = 8f, fireDelay = .15f, mouseSensitivity = 48;
+
+    [SerializeField]
+    public int score, health = 3;
+
+    private float inputHorizontal;
+    private float inputVertical;
+    private float mouseX;
+    private float mouseY;
     private Vector3 spawnPosition1;
-
     private Vector3 startPosition;
+    private float nextFireMark;
 
     [SerializeField]
-    private GameObject laserPrefab, trippleShotPrefab;
-
-    [SerializeField]
-    public float fireDelay = .15f;
-    public float nextFireMark;
-    private float health = 3;
-
-    [SerializeField]
-    private bool trippleShotActive;
-
-    [SerializeField]
-    private bool shieldActive = false;
+    private bool trippleShotActive, shieldActive;
 
     private SpawnManager spawnManager;
+    private UIManager uiManager;
 
-    [SerializeField]
-    private GameObject shield;
 
     // Start is called before the first frame update
     void Start() {
 
-        //take current position and set equal to (0,0,0)
-        //transform.position = new Vector3(0, -4, 0);
+        score = 0;
         nextFireMark = 0;
         startPosition = new Vector3(0, -3.5f, 0);
         transform.position = startPosition;
@@ -49,6 +42,8 @@ public class Player : MonoBehaviour {
             Debug.Log("There is no Spawn Manager in the game scene.");
         }
 
+        uiManager = canvas.GetComponent<UIManager>();
+      
     }
 
     // Update is called once per frame
@@ -137,6 +132,13 @@ public class Player : MonoBehaviour {
             //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 5.5f), 0);
             //Can use this in lieu of the 2 if/else statements above
         }
+    }
+
+    public void UpdateScore(int scoreValue) {
+        score += scoreValue;
+
+        //Update UI Manager Score Text
+        uiManager.UpdateUIScore(score);
     }
 
     public void TrippleShotActive() {
