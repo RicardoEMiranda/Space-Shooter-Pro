@@ -59,7 +59,8 @@ public class Player : MonoBehaviour {
     public void TakeDamage() {
         if (shieldActive == false) {
             health -= 1;
-            Debug.Log("Health: " + health);
+            uiManager.UpdateHealthSprites(health);
+            //Debug.Log("Health: " + health);
         }
 
 

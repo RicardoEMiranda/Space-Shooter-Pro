@@ -8,9 +8,16 @@ public class UIManager : MonoBehaviour {
     [SerializeField]
     private Text scoreText;
 
+    [SerializeField]
+    private Sprite[] lives;
+
+    [SerializeField]
+    private Image livesImage;
+
     // Start is called before the first frame update
     void Start() {
         scoreText.text = ": " + 0;
+        livesImage.sprite = lives[3];
     }
 
     // Update is called once per frame
@@ -20,5 +27,9 @@ public class UIManager : MonoBehaviour {
 
     public void UpdateUIScore(int points) {
         scoreText.text = ": " + points.ToString();
+    }
+
+    public void UpdateHealthSprites(int health) {
+        livesImage.sprite = lives[health];
     }
 }
