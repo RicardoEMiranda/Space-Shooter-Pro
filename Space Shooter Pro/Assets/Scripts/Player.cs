@@ -104,7 +104,7 @@ public class Player : MonoBehaviour {
 
         if(Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) >0 )  {
             //if mouse is being used for player control, use mouse inputs to move the player
-            //Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
+            Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
             transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity);
         } else {
             //if mouse is not being used for player control, use the keyboard arrow inputs and move player using those inputs
