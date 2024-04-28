@@ -44,10 +44,26 @@ public class UIManager : MonoBehaviour {
 
     public void UpdateHealthSprites(int health) {
         livesImage.sprite = lives[health];
+
+        if(health <= 0) {
+            StartCoroutine(GameOverFlicker());
+        }
+
     }
 
     public void TurnOnGameOverMessage() {
         gameOverObject.SetActive(true);
         gameOver = true;
+    }
+
+    IEnumerator GameOverFlicker() {
+
+        while(true) {
+            gameOverObject.SetActive(true);
+            yield return new WaitForSeconds(.7f);
+            gameOverObject.SetActive(false);
+            yield return new WaitForSeconds(.33f);
+        }
+      
     }
 }
