@@ -14,6 +14,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField]
     private Image livesImage;
 
+    [SerializeField]
+    private GameObject gameOverObject;
+
     // Start is called before the first frame update
     void Start() {
         scoreText.text = ": " + 0;
@@ -31,5 +34,9 @@ public class UIManager : MonoBehaviour {
 
     public void UpdateHealthSprites(int health) {
         livesImage.sprite = lives[health];
+    }
+
+    public void TurnOnGameOverMessage() {
+        gameOverObject.SetActive(true);
     }
 }

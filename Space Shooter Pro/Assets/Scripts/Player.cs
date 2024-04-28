@@ -67,6 +67,7 @@ public class Player : MonoBehaviour {
         if (health < 1) {
             spawnManager.StopSpawning();
             Destroy(this.gameObject);
+            uiManager.TurnOnGameOverMessage();
         }
     }
 
