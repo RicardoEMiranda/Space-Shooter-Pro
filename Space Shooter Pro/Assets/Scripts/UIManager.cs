@@ -20,6 +20,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField]
     private float strobeSpeed = 1f;
 
+    [SerializeField]
+    private GameObject button_Restart;
+
     private Color colorStart = Color.white, colorEnd = Color.red;
     private bool gameOver;
 
@@ -27,6 +30,7 @@ public class UIManager : MonoBehaviour {
     void Start() {
         scoreText.text = ": " + 0;
         livesImage.sprite = lives[3];
+        
     }
 
     // Update is called once per frame
@@ -35,6 +39,7 @@ public class UIManager : MonoBehaviour {
         if(gameOver) {
             gameOverObject.GetComponent<Image>().color = Color.Lerp(colorStart, colorEnd, Mathf.PingPong(Time.time * strobeSpeed, 1));
         }
+
 
     }
 
@@ -53,6 +58,7 @@ public class UIManager : MonoBehaviour {
 
     public void TurnOnGameOverMessage() {
         gameOverObject.SetActive(true);
+        button_Restart.SetActive(true);
         gameOver = true;
     }
 
@@ -66,4 +72,5 @@ public class UIManager : MonoBehaviour {
         }
       
     }
+
 }
