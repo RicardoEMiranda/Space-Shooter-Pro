@@ -973,6 +973,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6da25f3fed41d524fb7f75549a1fc7c1, type: 3}
   livesImage: {fileID: 478943056}
   gameOverObject: {fileID: 528214366}
+  strobeSpeed: 1
 --- !u!1 &858231464
 GameObject:
   m_ObjectHideFlags: 0
