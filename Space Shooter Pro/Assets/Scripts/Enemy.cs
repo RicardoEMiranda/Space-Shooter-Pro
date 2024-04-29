@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     private float speed = 4f;
 
+    [SerializeField]
+    private GameObject explosion;
+
     private Player player;
 
     // Start is called before the first frame update
@@ -56,7 +59,8 @@ public class Enemy : MonoBehaviour {
                 player.TakeDamage();
                 player.UpdateScore(enemyValue);
             }
-            
+
+            Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
 
@@ -69,7 +73,7 @@ public class Enemy : MonoBehaviour {
             if(player != null) {
                 player.UpdateScore(enemyValue);
             }
-          
+            Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
 

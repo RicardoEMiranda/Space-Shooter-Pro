@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyValue: 10
   speed: 4
+  explosion: {fileID: 4482132639196061568, guid: 41abec7ae338ee548a947a31d76a9cff,
+    type: 3}
 --- !u!212 &2554819297923234597
 SpriteRenderer:
   m_ObjectHideFlags: 0
