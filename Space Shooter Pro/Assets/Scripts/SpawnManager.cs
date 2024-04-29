@@ -23,13 +23,17 @@ public class SpawnManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        StartCoroutine(SpawnEnemyRoutine());
-        StartCoroutine(SpawnTrippleShotPowerup());
+       
     }
 
     // Update is called once per frame
     void Update() {
 
+    }
+
+    public void StartSpawning() {
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnTrippleShotPowerup());
     }
 
     IEnumerator SpawnEnemyRoutine() {
@@ -43,7 +47,7 @@ public class SpawnManager : MonoBehaviour {
 
         //yield return new WaitForSeconds(5);
         //do this here after 5 seconds
-
+        yield return new WaitForSeconds(2f);
         while (continueSpawning) {
             Vector3 spawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
@@ -54,7 +58,8 @@ public class SpawnManager : MonoBehaviour {
     }
 
     IEnumerator SpawnTrippleShotPowerup() {
-        while(spawnTrippleShotPowerup) {
+        yield return new WaitForSeconds(2f);
+        while (spawnTrippleShotPowerup) {
             powerUpSpawnDelay = Random.Range(10, 20);
             Vector3 powerUpSpawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
             int powerUpIndex = Random.Range(0, 3);
