@@ -6,13 +6,16 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour {
 
     [SerializeField]
-    private GameObject laserPrefab, trippleShotPrefab, shield, canvas;
+    private GameObject laserPrefab, trippleShotPrefab, shield, canvas, explosion;
+
+    [SerializeField]
+    private GameObject[] fire;
 
     [SerializeField]
     private float speed = 8f, fireDelay = .15f, mouseSensitivity = 48;
 
     [SerializeField]
-    public int score, health = 3;
+    public int score, fireObjectIndex, health = 3;
 
     private float inputHorizontal;
     private float inputVertical;
@@ -60,12 +63,24 @@ public class Player : MonoBehaviour {
         if (shieldActive == false) {
             health -= 1;
             uiManager.UpdateHealthSprites(health);
-            //Debug.Log("Health: " + health);
-        }
+            
+            if(health == 2) {
+                fireObjectIndex = Random.Range(0, 2);
+                fire[fireObjectIndex].SetActive(true);
+            } else if (health == 1) {
+                if(fireObjectIndex == 0) {
+                    fire[1].SetActive(true);
+                } else if(fireObjectIndex == 1) {
+                    fire[0].SetActive(true);
+                }
+               
+            }
 
+        }
 
         if (health < 1) {
             spawnManager.StopSpawning();
+            Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
             uiManager.TurnOnGameOverMessage();
         }

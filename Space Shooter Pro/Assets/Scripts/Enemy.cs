@@ -51,7 +51,6 @@ public class Enemy : MonoBehaviour {
             //null check that the Player componet on the other.transform existis
             if(player == null) {
                 Debug.Log("No Player Object Detected");
-
             }
 
             if(player != null) {
