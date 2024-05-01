@@ -15,7 +15,8 @@ public class ExplosionController : MonoBehaviour {
     }
 
     IEnumerator SelfDestructDelay() {
-        yield return new WaitForSeconds(.66f);
-        Destroy(this.gameObject);
+        yield return new WaitForSeconds(.5f);
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        Destroy(this.gameObject, 1f);
     }
 }
