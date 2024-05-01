@@ -1426,7 +1426,7 @@ MonoBehaviour:
   - {fileID: 1286716581}
   speed: 8
   fireDelay: 0.15
-  mouseSensitivity: 6
+  mouseSensitivity: 9
   speedBoost: 1
   score: 0
   fireObjectIndex: 0
@@ -1567,7 +1567,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

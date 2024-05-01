@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     private GameObject[] fire;
 
     [SerializeField]
-    private float speed = 8f, fireDelay = .15f, mouseSensitivity = 6f, speedBoost = 1;
+    private float speed = 8f, fireDelay = .15f, mouseSensitivity = 9f, speedBoost = 1;
 
     [SerializeField]
     public int score, fireObjectIndex, health = 3;
