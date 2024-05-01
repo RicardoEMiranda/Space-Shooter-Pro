@@ -79,6 +79,7 @@ public class Player : MonoBehaviour {
                 asteroidDestroyed = true;
                 audioSource_Player.clip = audioClip_BGL1;
                 audioSource_Player.Play();
+                audioSource_Player.volume = .65f;
             }
         }
     }

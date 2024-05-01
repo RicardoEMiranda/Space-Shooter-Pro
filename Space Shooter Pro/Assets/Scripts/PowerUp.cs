@@ -10,9 +10,15 @@ public class PowerUp : MonoBehaviour {
     [SerializeField]
     private int powerUpID;
 
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip audioClip_Electricity, audioClip_Buzz;
+
     // Start is called before the first frame update
     void Start() {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -44,12 +50,20 @@ public class PowerUp : MonoBehaviour {
                 switch (powerUpID) {
                     case 0:
                         player.TrippleShotActive();
+                        audioSource.clip = audioClip_Buzz;
+                        audioSource.Play();
                         break;
                     case 1:
                         player.SpeedPowerUpActive();
+                        audioSource.clip = audioClip_Buzz;
+                        audioSource.Play();
+                        //audioSource.pitch = 2;
                         break;
                     case 2:
                         player.ShieldActive();
+                        audioSource.clip = audioClip_Electricity;
+                        audioSource.Play();
+                        //audioSource.pitch = 2;
                         break;
                     default:
                         Debug.Log("Warning, check Power Up IDs...");
@@ -57,8 +71,8 @@ public class PowerUp : MonoBehaviour {
 
                 }
             }
-
-            Destroy(this.gameObject);
+            this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            Destroy(this.gameObject, 1);
         }
 
     }
