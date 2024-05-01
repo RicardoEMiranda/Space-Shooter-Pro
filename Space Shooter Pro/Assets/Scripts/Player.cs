@@ -6,16 +6,20 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour {
 
     [SerializeField]
-    private GameObject laserPrefab, trippleShotPrefab, shield, canvas, explosion;
+    private GameObject laserPrefab, trippleShotPrefab, shield, canvas, explosion, asteroid;
 
     [SerializeField]
     private GameObject[] fire;
 
     [SerializeField]
-    private float speed = 8f, fireDelay = .15f, mouseSensitivity = 48;
+    private float speed = 8f, fireDelay = .15f, mouseSensitivity = 6f, speedBoost = 1;
 
     [SerializeField]
     public int score, fireObjectIndex, health = 3;
+
+    [SerializeField]
+    private AudioClip audioClip_Waiting, audioClip_BGL1;
+    private AudioSource audioSource_Player;
 
     private float inputHorizontal;
     private float inputVertical;
@@ -26,7 +30,7 @@ public class Player : MonoBehaviour {
     private float nextFireMark;
 
     [SerializeField]
-    private bool trippleShotActive, shieldActive;
+    private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed;
 
     private SpawnManager spawnManager;
     private UIManager uiManager;
@@ -41,12 +45,20 @@ public class Player : MonoBehaviour {
         transform.position = startPosition;
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
-        if(spawnManager == null) {
+        uiManager = canvas.GetComponent<UIManager>();
+        audioSource_Player = GetComponent<AudioSource>();
+
+        if (spawnManager == null) {
             Debug.Log("There is no Spawn Manager in the game scene.");
         }
 
-        uiManager = canvas.GetComponent<UIManager>();
-      
+        if(audioSource_Player == null) {
+            Debug.Log("AudioSource on Player is null!");
+        } else {
+            audioSource_Player.clip = audioClip_Waiting;
+            audioSource_Player.Play();
+        }
+        
     }
 
     // Update is called once per frame
@@ -56,7 +68,19 @@ public class Player : MonoBehaviour {
         MovePlayer();
         CheckPlayerPosition();
         FireLaser();
+        StartAudio();
 
+    }
+
+    private void StartAudio() {
+        if(!asteroidDestroyed) {
+            if(asteroid == null) {
+                //Debug.Log("Asteroid Destroyed");
+                asteroidDestroyed = true;
+                audioSource_Player.clip = audioClip_BGL1;
+                audioSource_Player.Play();
+            }
+        }
     }
 
     public void TakeDamage() {
@@ -121,7 +145,7 @@ public class Player : MonoBehaviour {
         if(Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) >0 )  {
             //if mouse is being used for player control, use mouse inputs to move the player
             Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
-            transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity);
+            transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity * speedBoost);
         } else {
             //if mouse is not being used for player control, use the keyboard arrow inputs and move player using those inputs
             transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
@@ -166,8 +190,7 @@ public class Player : MonoBehaviour {
     }
 
     public void SpeedPowerUpActive() {
-        speed = 16f;
-        mouseSensitivity += 48;
+        speedBoost = 2;
         StartCoroutine(PowerDownSpeed());
     }
 
@@ -186,9 +209,8 @@ public class Player : MonoBehaviour {
     }
 
     IEnumerator PowerDownSpeed() {
-        yield return new WaitForSeconds(5);
-        speed = 8f;
-        mouseSensitivity = 48;
+        yield return new WaitForSeconds(10);
+        speedBoost = 1;
     }
 
     IEnumerator PowerDownTrippleShot() {
