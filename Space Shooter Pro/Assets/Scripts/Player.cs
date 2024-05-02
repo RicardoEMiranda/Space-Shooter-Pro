@@ -12,14 +12,16 @@ public class Player : MonoBehaviour {
     private GameObject[] fire;
 
     [SerializeField]
-    private float speed = 8f, fireDelay = .15f, mouseSensitivity = 9f, speedBoost = 1;
+    private float speed = 8f, fireDelay = .15f, mouseSensitivity = 12f, speedBoost = 1;
 
     [SerializeField]
     public int score, fireObjectIndex, health = 3;
 
     [SerializeField]
-    private AudioClip audioClip_Waiting, audioClip_BGL1;
-    private AudioSource audioSource_Player;
+    private AudioClip audioClip_Waiting, audioClip_BGL1, audioClip_PanicAlarm, audioClip_AIWarning;
+
+    [SerializeField]
+    private AudioSource audioSource_BGMusic, audioSource_SFX, audioSource_SFX2;
 
     private float inputHorizontal;
     private float inputVertical;
@@ -46,17 +48,17 @@ public class Player : MonoBehaviour {
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
         uiManager = canvas.GetComponent<UIManager>();
-        audioSource_Player = GetComponent<AudioSource>();
+        //audioSource_Player = GetComponent<AudioSource>();
 
         if (spawnManager == null) {
             Debug.Log("There is no Spawn Manager in the game scene.");
         }
 
-        if(audioSource_Player == null) {
+        if(audioSource_BGMusic == null) {
             Debug.Log("AudioSource on Player is null!");
         } else {
-            audioSource_Player.clip = audioClip_Waiting;
-            audioSource_Player.Play();
+            audioSource_BGMusic.clip = audioClip_Waiting;
+            audioSource_BGMusic.Play();
         }
         
     }
@@ -77,9 +79,9 @@ public class Player : MonoBehaviour {
             if(asteroid == null) {
                 //Debug.Log("Asteroid Destroyed");
                 asteroidDestroyed = true;
-                audioSource_Player.clip = audioClip_BGL1;
-                audioSource_Player.Play();
-                audioSource_Player.volume = .65f;
+                audioSource_BGMusic.clip = audioClip_BGL1;
+                audioSource_BGMusic.Play();
+                audioSource_BGMusic.volume = .5f;
             }
         }
     }
@@ -98,7 +100,11 @@ public class Player : MonoBehaviour {
                 } else if(fireObjectIndex == 1) {
                     fire[0].SetActive(true);
                 }
-               
+                audioSource_SFX.clip = audioClip_PanicAlarm;
+                audioSource_SFX2.clip = audioClip_AIWarning;
+                audioSource_SFX.Play();
+                audioSource_SFX2.Play();
+
             }
 
         }

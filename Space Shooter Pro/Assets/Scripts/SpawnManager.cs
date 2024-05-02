@@ -23,7 +23,7 @@ public class SpawnManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-       
+        
     }
 
     // Update is called once per frame
@@ -53,7 +53,6 @@ public class SpawnManager : MonoBehaviour {
             GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = enemyContainer.transform;
             yield return new WaitForSeconds(1);
-
         }
     }
 

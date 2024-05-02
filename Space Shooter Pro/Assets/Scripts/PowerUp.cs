@@ -14,7 +14,7 @@ public class PowerUp : MonoBehaviour {
     private AudioSource audioSource;
 
     [SerializeField]
-    private AudioClip audioClip_Electricity, audioClip_Buzz;
+    private AudioClip audioClip_PowerUp;
 
     // Start is called before the first frame update
     void Start() {
@@ -50,18 +50,18 @@ public class PowerUp : MonoBehaviour {
                 switch (powerUpID) {
                     case 0:
                         player.TrippleShotActive();
-                        audioSource.clip = audioClip_Buzz;
+                        audioSource.clip = audioClip_PowerUp;
                         audioSource.Play();
                         break;
                     case 1:
                         player.SpeedPowerUpActive();
-                        audioSource.clip = audioClip_Buzz;
+                        audioSource.clip = audioClip_PowerUp;
                         audioSource.Play();
                         //audioSource.pitch = 2;
                         break;
                     case 2:
                         player.ShieldActive();
-                        audioSource.clip = audioClip_Electricity;
+                        audioSource.clip = audioClip_PowerUp;
                         audioSource.Play();
                         //audioSource.pitch = 2;
                         break;

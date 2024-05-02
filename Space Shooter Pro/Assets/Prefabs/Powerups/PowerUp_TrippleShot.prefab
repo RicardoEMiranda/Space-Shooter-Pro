@@ -147,9 +147,7 @@ MonoBehaviour:
   speed: 3
   powerUpID: 0
   audioSource: {fileID: 0}
-  audioClip_Electricity: {fileID: 8300000, guid: eec3bf121b316d64ca1c8aac7573a2f4,
-    type: 3}
-  audioClip_Buzz: {fileID: 8300000, guid: 7f4aa26d5b55226409cda231ffaf869b, type: 3}
+  audioClip_PowerUp: {fileID: 8300000, guid: beaec9aa905a0b84b88b69b2333358fb, type: 3}
 --- !u!82 &1370704905493910421
 AudioSource:
   m_ObjectHideFlags: 0
