@@ -17,6 +17,7 @@ public class FireSFX : MonoBehaviour {
         audioSource.enabled = true;
         audioSource.clip = audioClip_Fire;
         audioSource.Play();
+        audioSource.volume = .5f;
     }
 
 }
