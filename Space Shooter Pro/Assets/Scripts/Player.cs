@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     private GameObject[] fire;
 
     [SerializeField]
-    private float speed = 8f, fireDelay = .15f, mouseSensitivity = 12f, speedBoost = 1;
+    private float speed = 8f, fireDelay = .15f, mouseSensitivity, screenWidthFactor = .0295f, speedBoost = 1;
 
     [SerializeField]
     public int score, fireObjectIndex, health = 3;
@@ -49,6 +49,9 @@ public class Player : MonoBehaviour {
 
         uiManager = canvas.GetComponent<UIManager>();
         //audioSource_Player = GetComponent<AudioSource>();
+
+        Debug.Log("Screen Width: " + Screen.width);
+        mouseSensitivity = screenWidthFactor * Screen.width;
 
         if (spawnManager == null) {
             Debug.Log("There is no Spawn Manager in the game scene.");
