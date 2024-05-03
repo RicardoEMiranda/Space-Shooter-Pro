@@ -30,6 +30,7 @@ public class Player : MonoBehaviour {
     private Vector3 spawnPosition1;
     private Vector3 startPosition;
     private float nextFireMark;
+  
 
     [SerializeField]
     private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed;
@@ -152,6 +153,7 @@ public class Player : MonoBehaviour {
         //transform.Translate(Vector3.right * inputHorizontal * Time.deltaTime * speed);
         //transform.Translate(Vector3.up * inputVertical * Time.deltaTime * speed);
 
+
         if(Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) >0 )  {
             //if mouse is being used for player control, use mouse inputs to move the player
             Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
@@ -160,6 +162,7 @@ public class Player : MonoBehaviour {
             //if mouse is not being used for player control, use the keyboard arrow inputs and move player using those inputs
             transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
         }
+
 
     }
     void CheckPlayerPosition() {
