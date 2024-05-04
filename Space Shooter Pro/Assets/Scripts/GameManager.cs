@@ -24,19 +24,19 @@ public class GameManager : MonoBehaviour {
     }
 
     public void PauseButtonClicked() {
-        Debug.Log("Pause Button clicked");
+        //Debug.Log("Pause Button clicked");
         pauseModal.SetActive(true);
         Time.timeScale = 0;
     }
 
     public void ResumeButtonClicked() {
-        Debug.Log("Resume Button clicked");
+        //Debug.Log("Resume Button clicked");
         pauseModal.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void ExitButtonClicked() {
-        Debug.Log("Exit Button clicked");
+        //Debug.Log("Exit Button clicked");
 
         //Preprocessor Directives. Conitionally compiles code depending on the condition.
         //If game is playing in the Unity Editor, then will use UnityEditor.EditorApplication.isPlaying to quit the application,
