@@ -56,6 +56,7 @@ public class Player : MonoBehaviour {
         Debug.Log("Screen Width: " + Screen.width);
         mouseSensitivity = 12f;
 
+        #if UNITY_EDITOR
         if(Screen.width <= 500) {
             mouseSensitivity *= 1.5f;
             Debug.Log("Sensitivity for w<500: " + mouseSensitivity);
@@ -73,7 +74,8 @@ public class Player : MonoBehaviour {
             mouseSensitivity = 1.5f;
             Debug.Log("Screen width case not provisioned.");
         }
-        
+        # endif 
+
         if (spawnManager == null) {
             Debug.Log("There is no Spawn Manager in the game scene.");
         }

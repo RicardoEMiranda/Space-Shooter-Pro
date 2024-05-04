@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
         //Preprocessor Directives. Conitionally compiles code depending on the condition.
         //If game is playing in the Unity Editor, then will use UnityEditor.EditorApplication.isPlaying to quit the application,
         //since Application.Quit() doesn't work when running on the editor. Otherwise, if playing from the Windows build,
-        ////uses Application.Quit();
+        //uses Application.Quit(). 
 
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
