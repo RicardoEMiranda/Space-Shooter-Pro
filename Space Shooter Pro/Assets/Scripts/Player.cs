@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     private GameObject[] fire;
 
     [SerializeField]
-    private float speed = 8f, fireDelay = .15f, mouseSensitivity, screenWidthFactor = .0295f, speedBoost = 1;
+    private float speed = 8f, fireDelay = .15f, mouseSensitivity, speedBoost = 1;
 
     [SerializeField]
     public int score, fireObjectIndex, health = 3;
@@ -22,6 +22,9 @@ public class Player : MonoBehaviour {
 
     [SerializeField]
     private AudioSource audioSource_BGMusic, audioSource_SFX, audioSource_SFX2;
+
+    [SerializeField]
+    private Text text_TestData;
 
     private float inputHorizontal;
     private float inputVertical;
@@ -49,11 +52,28 @@ public class Player : MonoBehaviour {
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
         uiManager = canvas.GetComponent<UIManager>();
-        //audioSource_Player = GetComponent<AudioSource>();
 
         Debug.Log("Screen Width: " + Screen.width);
-        mouseSensitivity = screenWidthFactor * Screen.width;
+        mouseSensitivity = 12f;
 
+        if(Screen.width <= 500) {
+            mouseSensitivity *= 1.5f;
+            Debug.Log("Sensitivity for w<500: " + mouseSensitivity);
+            text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
+        } else if(Screen.width > 800 && Screen.width<1080) {
+            mouseSensitivity *= 3f;
+            Debug.Log("Sensitivity for 800<w<1080: " + mouseSensitivity);
+            text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
+        } else if (Screen.width >= 1080) {
+            //this will catch the Windows build scenario where it's using 1280w x 720 h screen size
+            //uses the default mouseSensitivity = 12f set at the Start( ) method
+            Debug.Log("Sensitivity for w > 1080" + mouseSensitivity);
+            text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
+        } else {
+            mouseSensitivity = 1.5f;
+            Debug.Log("Screen width case not provisioned.");
+        }
+        
         if (spawnManager == null) {
             Debug.Log("There is no Spawn Manager in the game scene.");
         }
@@ -133,8 +153,7 @@ public class Player : MonoBehaviour {
             } else {
                 Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
             }
-            
-
+           
             nextFireMark = Time.time + fireDelay;
         }
     }
@@ -145,16 +164,16 @@ public class Player : MonoBehaviour {
         inputVertical = Input.GetAxis("Vertical");
 
         //Input for Mouse Movement as input
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
+        mouseX = Mathf.Clamp(Input.GetAxis("Mouse X"), -1, 1);
+        mouseY = Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1);
+        
     }
 
     void MovePlayer() {
         //transform.Translate(Vector3.right * inputHorizontal * Time.deltaTime * speed);
         //transform.Translate(Vector3.up * inputVertical * Time.deltaTime * speed);
 
-
-        if(Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) >0 )  {
+        if (Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) >0 )  {
             //if mouse is being used for player control, use mouse inputs to move the player
             Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
             transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity * speedBoost);

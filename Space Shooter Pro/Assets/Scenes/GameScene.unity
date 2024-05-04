@@ -681,7 +681,6 @@ MonoBehaviour:
   speed: 8
   fireDelay: 0.15
   mouseSensitivity: 48
-  screenWidthFactor: 0.03
   speedBoost: 2
   score: 0
   fireObjectIndex: 0
@@ -693,6 +692,7 @@ MonoBehaviour:
   audioSource_BGMusic: {fileID: 0}
   audioSource_SFX: {fileID: 0}
   audioSource_SFX2: {fileID: 0}
+  text_TestData: {fileID: 0}
   trippleShotActive: 0
   shieldActive: 0
   speedActive: 0
@@ -739,7 +739,7 @@ GameObject:
   - component: {fileID: 351332608}
   - component: {fileID: 351332607}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Text_ScoreHeader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -804,6 +804,84 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 351332605}
+  m_CullTransparentMesh: 0
+--- !u!1 &364260358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364260359}
+  - component: {fileID: 364260361}
+  - component: {fileID: 364260360}
+  m_Layer: 5
+  m_Name: Text_TestData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &364260359
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364260358}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 721104875}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 327.69, y: -67.6}
+  m_SizeDelta: {x: 609.1986, y: 41.18953}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &364260360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364260358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 54dae765f0131c641be3e67edec88f73, type: 3}
+    m_FontSize: 30
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 225
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Test
+--- !u!222 &364260361
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364260358}
   m_CullTransparentMesh: 0
 --- !u!1 &444241919
 GameObject:
@@ -927,7 +1005,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 721104875}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1001,7 +1079,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 721104875}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1168,7 +1246,7 @@ RectTransform:
   m_Children:
   - {fileID: 89272647}
   m_Father: {fileID: 721104875}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1274,6 +1352,7 @@ RectTransform:
   m_Children:
   - {fileID: 1195084610}
   - {fileID: 351332606}
+  - {fileID: 364260359}
   - {fileID: 478943055}
   - {fileID: 528214367}
   - {fileID: 619729008}
@@ -1435,7 +1514,6 @@ MonoBehaviour:
   speed: 8
   fireDelay: 0.15
   mouseSensitivity: 12
-  screenWidthFactor: 0.03
   speedBoost: 1
   score: 0
   fireObjectIndex: 0
@@ -1448,6 +1526,7 @@ MonoBehaviour:
   audioSource_BGMusic: {fileID: 1010685429}
   audioSource_SFX: {fileID: 1010685430}
   audioSource_SFX2: {fileID: 1010685431}
+  text_TestData: {fileID: 364260360}
   trippleShotActive: 0
   shieldActive: 0
   speedActive: 0

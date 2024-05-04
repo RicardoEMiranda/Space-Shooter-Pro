@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
+    [SerializeField]
+    private GameObject pauseModal;
+
+
+
     // Start is called before the first frame update
     void Start() {
 
@@ -16,7 +21,20 @@ public class GameManager : MonoBehaviour {
     }
 
     public void RestartButtonClicked() {
-        Debug.Log("Restart clicked");
+        //Debug.Log("Restart clicked");
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void PauseButtonClicked() {
+        Debug.Log("Pause Button clicked");
+        pauseModal.SetActive(true);
+    }
+
+    public void ResumeButtonClicked() {
+        Debug.Log("Resume Button clicked");
+    }
+
+    public void ExitButtonClicked() {
+        Debug.Log("Exit Button clicked");
     }
 }
