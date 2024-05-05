@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour {
 
     [SerializeField]
-    private GameObject enemyPrefab;
+    private GameObject[] enemyPrefab;
 
     [SerializeField]
     private GameObject enemyContainer;
@@ -19,11 +19,13 @@ public class SpawnManager : MonoBehaviour {
     private bool continueSpawning = true;
     private bool spawnTrippleShotPowerup = true;
     private float powerUpSpawnDelay;
+    private int noOfEnemyVariants;
+    private int enemyInstance;
 
 
     // Start is called before the first frame update
     void Start() {
-        
+        noOfEnemyVariants = enemyPrefab.Length;
     }
 
     // Update is called once per frame
@@ -49,11 +51,28 @@ public class SpawnManager : MonoBehaviour {
         //do this here after 5 seconds
         yield return new WaitForSeconds(2f);
         while (continueSpawning) {
+
+            //Randomize enemy variant to spawn
+            //enemyInstance = Random.Range(0, noOfEnemyVariants); //Instantiates even distribution among all the variants
+            enemyInstance = GetRandomValue(); //this one returns enemy variant 0 with 76% probability and enemy variant 1 with 25% probability
+            //Debug.Log("Enemy Instance: " + enemyInstance);
+
             Vector3 spawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
-            GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            GameObject newEnemy = Instantiate(enemyPrefab[enemyInstance], spawnPosition, Quaternion.identity);
             newEnemy.transform.parent = enemyContainer.transform;
             yield return new WaitForSeconds(1);
         }
+    }
+
+    private int GetRandomValue() {
+        //returns enemy variant 0 with 76% probability and enemy variant 1 with 25% probability
+        float randomFloat = Random.Range(0f,1f);
+        if(randomFloat <= .75f) {
+            return 0;
+        } else {
+            return 1;
+        }
+
     }
 
     IEnumerator SpawnTrippleShotPowerup() {

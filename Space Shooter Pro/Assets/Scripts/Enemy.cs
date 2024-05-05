@@ -14,9 +14,10 @@ public class Enemy : MonoBehaviour {
     private float speed = 4f;
 
     [SerializeField]
-    private GameObject explosion;
+    private GameObject explosion, enemyLaserPrefab;
 
     private Player player;
+    private bool firedEnemyLaser;
 
     // Start is called before the first frame update
     void Start() {
@@ -35,6 +36,29 @@ public class Enemy : MonoBehaviour {
             ResetPosition();
         }
 
+        if(enemyValue == 50 && transform.position.y > 9) {
+            //ensures that if the enemy variant with value 50 is reinstantiated (player did not destroy it the first time)
+            //at the top of the game scene, reset the firedEnemyLaser variable to ensure it fires again as if it's a new enemy.
+            firedEnemyLaser = false;
+        }
+
+        //if enemy value is 50 then run the fire laser routine
+        if(enemyValue == 50 && !firedEnemyLaser) {
+            FireEnemyLaser();
+        }
+        
+    }
+
+    private void FireEnemyLaser() {
+        float firePosition = Random.Range(4f, 7.3f);
+        float positionError = .5f;
+        float maxPosition = firePosition + positionError;
+        float minPosition = firePosition - positionError;
+        Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y - .8f, transform.position.z);
+        if(transform.position.y <= (firePosition + positionError) && transform.position.y >= (firePosition - positionError) ) {
+            Instantiate(enemyLaserPrefab, spawnPosition, Quaternion.identity);
+            firedEnemyLaser = true;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

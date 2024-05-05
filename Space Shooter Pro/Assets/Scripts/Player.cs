@@ -252,4 +252,14 @@ public class Player : MonoBehaviour {
         trippleShotActive = false;
     }
 
+    private void OnTriggerEnter2D(Collider2D other) {
+        //Debug.Log("Collision w/Enemy Laser");
+        if(other.transform.tag == "EnemyLaser") {
+            Vector3 explosionPosition = new Vector3(transform.position.x - .25f, transform.position.y, transform.position.z);
+            Instantiate(explosion, explosionPosition, Quaternion.identity);
+            TakeDamage();
+            Destroy(other.gameObject);
+        }
+    }
+
 }
