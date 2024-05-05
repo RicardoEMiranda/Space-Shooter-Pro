@@ -175,14 +175,26 @@ public class Player : MonoBehaviour {
         //transform.Translate(Vector3.right * inputHorizontal * Time.deltaTime * speed);
         //transform.Translate(Vector3.up * inputVertical * Time.deltaTime * speed);
 
-        if (Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) >0 )  {
+        # if UNITY_EDITOR //when compiling for Unity Editor play, use the mouse input
+            if (Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) > 0) {
+                //if mouse is being used for player control, use mouse inputs to move the player
+                //Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
+                transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity * speedBoost);
+             }
+        #endif
+
+        
+        /*if (Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) >0 )  {
             //if mouse is being used for player control, use mouse inputs to move the player
             //Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
             transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity * speedBoost);
         } else {
             //if mouse is not being used for player control, use the keyboard arrow inputs and move player using those inputs
             transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
-        }
+        }*/
+
+        //if not using the Unity Editor for playing (such as when playing in Windows or WebGL build), then use the arrow keys for player input
+        transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
 
 
     }
