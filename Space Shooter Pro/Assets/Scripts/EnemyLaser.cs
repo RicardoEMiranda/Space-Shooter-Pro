@@ -16,7 +16,7 @@ public class EnemyLaser : MonoBehaviour {
 
         transform.Translate(Vector3.down * speed * Time.deltaTime);
 
-        if (transform.position.y < -2f) {
+        if (transform.position.y < -10f) {
             Destroy(this.gameObject);
         }
     }
@@ -24,8 +24,8 @@ public class EnemyLaser : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
 
         if (other.transform.tag == "Player") {
-            //Destroy(this.gameObject);
-            Debug.Log("Player Hit");
+            Destroy(this.gameObject);
+          
         }
     }
 }

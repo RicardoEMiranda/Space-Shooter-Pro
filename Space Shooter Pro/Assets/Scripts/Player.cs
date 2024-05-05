@@ -62,7 +62,7 @@ public class Player : MonoBehaviour {
             Debug.Log("Sensitivity for w<500: " + mouseSensitivity);
             text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
         } else if(Screen.width > 800 && Screen.width<1080) {
-            mouseSensitivity *= 3f;
+            mouseSensitivity *= 4f;
             Debug.Log("Sensitivity for 800<w<1080: " + mouseSensitivity);
             text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
         } else if (Screen.width >= 1080) {
