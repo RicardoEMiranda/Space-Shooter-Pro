@@ -28,6 +28,7 @@ public class Player : MonoBehaviour {
 
     private float inputHorizontal;
     private float inputVertical;
+    private bool inputLeftShift;
     private float mouseX;
     private float mouseY;
     private Vector3 spawnPosition1;
@@ -59,20 +60,20 @@ public class Player : MonoBehaviour {
         #if UNITY_EDITOR
         if(Screen.width <= 500) {
             mouseSensitivity *= 1.5f;
-            Debug.Log("Sensitivity for w<500: " + mouseSensitivity);
-            text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
+            //Debug.Log("Sensitivity for w<500: " + mouseSensitivity);
+            //text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
         } else if(Screen.width > 800 && Screen.width<1080) {
             mouseSensitivity *= 4f;
-            Debug.Log("Sensitivity for 800<w<1080: " + mouseSensitivity);
-            text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
+           // Debug.Log("Sensitivity for 800<w<1080: " + mouseSensitivity);
+            //text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
         } else if (Screen.width >= 1080) {
             //this will catch the Windows build scenario where it's using 1280w x 720 h screen size
             //uses the default mouseSensitivity = 12f set at the Start( ) method
-            Debug.Log("Sensitivity for w > 1080" + mouseSensitivity);
-            text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
+            //Debug.Log("Sensitivity for w > 1080" + mouseSensitivity);
+            //text_TestData.text = "Mouse sensitivity: " + mouseSensitivity.ToString();
         } else {
             mouseSensitivity = 1.5f;
-            Debug.Log("Screen width case not provisioned.");
+            //Debug.Log("Screen width case not provisioned.");
         }
         # endif 
 
@@ -165,10 +166,19 @@ public class Player : MonoBehaviour {
         inputHorizontal = Input.GetAxis("Horizontal");
         inputVertical = Input.GetAxis("Vertical");
 
+        if(Input.GetKeyDown(KeyCode.LeftShift)) {
+            inputLeftShift = true;
+            Debug.Log("Shift pressed");
+        } 
+
+        if(Input.GetKeyUp(KeyCode.LeftShift)) {
+            inputLeftShift = false;
+            Debug.Log("Shift released");
+        }
+
         //Input for Mouse Movement as input
-        mouseX = Mathf.Clamp(Input.GetAxis("Mouse X"), -1, 1);
-        mouseY = Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1);
-        
+        //mouseX = Mathf.Clamp(Input.GetAxis("Mouse X"), -1, 1);
+        //mouseY = Mathf.Clamp(Input.GetAxis("Mouse Y"), -1, 1);
     }
 
     void MovePlayer() {
@@ -176,11 +186,11 @@ public class Player : MonoBehaviour {
         //transform.Translate(Vector3.up * inputVertical * Time.deltaTime * speed);
 
         # if UNITY_EDITOR //when compiling for Unity Editor play, use the mouse input
-            if (Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) > 0) {
-                //if mouse is being used for player control, use mouse inputs to move the player
-                //Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
-                transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity * speedBoost);
-             }
+        if (Mathf.Abs(mouseX) > 0 || Mathf.Abs(mouseY) > 0) {
+            //if mouse is being used for player control, use mouse inputs to move the player
+            //Cursor.lockState = CursorLockMode.Confined; //if want to confine the mouse inside the game screen
+            transform.Translate(new Vector3(mouseX, mouseY, 0) * Time.deltaTime * mouseSensitivity * speedBoost);
+         }
         #endif
 
         
@@ -194,7 +204,17 @@ public class Player : MonoBehaviour {
         }*/
 
         //if not using the Unity Editor for playing (such as when playing in Windows or WebGL build), then use the arrow keys for player input
-        transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed);
+
+        if (inputLeftShift && !speedActive) {
+            speedBoost = 2;
+            text_TestData.text = "Left Shift Button Pressed.";
+        }
+
+        if(!inputLeftShift) {
+            speedBoost = 1;
+            text_TestData.text = "Left Shift Button Released.";
+        }
+        transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed * speedBoost);
 
 
     }
@@ -237,6 +257,7 @@ public class Player : MonoBehaviour {
 
     public void SpeedPowerUpActive() {
         speedBoost = 2;
+        speedActive = true;
         StartCoroutine(PowerDownSpeed());
     }
 
@@ -257,6 +278,7 @@ public class Player : MonoBehaviour {
     IEnumerator PowerDownSpeed() {
         yield return new WaitForSeconds(10);
         speedBoost = 1;
+        speedActive = false;
     }
 
     IEnumerator PowerDownTrippleShot() {
