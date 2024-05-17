@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour {
 
     [SerializeField]
-    private Text scoreText;
+    private Text scoreText, ammoCountText;
 
     [SerializeField]
     private Sprite[] lives;
 
     [SerializeField]
-    private Image livesImage;
+    private Image livesImage, ammoCountFill;
 
     [SerializeField]
     private GameObject gameOverObject;
@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         scoreText.text = ": " + 0;
+        ammoCountText.text = "" + 15;
         livesImage.sprite = lives[3];
         
     }
@@ -45,6 +46,14 @@ public class UIManager : MonoBehaviour {
 
     public void UpdateUIScore(int points) {
         scoreText.text = ": " + points.ToString();
+    }
+
+    public void UpdateAmmoCount(int ammoCount) {
+        ammoCountText.text = ammoCount.ToString();
+    }
+
+    public void UpdateAmmoCountIndicator(float fill) {
+        ammoCountFill.fillAmount = fill;
     }
 
     public void UpdateHealthSprites(int health) {

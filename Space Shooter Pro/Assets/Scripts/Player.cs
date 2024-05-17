@@ -35,10 +35,12 @@ public class Player : MonoBehaviour {
     private Vector3 startPosition;
     private float nextFireMark;
     private int shieldHitCount = 0;
+    private int ammoCount;
+    private float ammoIndicatorFill;
   
 
     [SerializeField]
-    private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed;
+    private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed, canFire;
 
     private SpawnManager spawnManager;
     private UIManager uiManager;
@@ -48,6 +50,9 @@ public class Player : MonoBehaviour {
     void Start() {
 
         score = 0;
+        ammoCount = 15;
+        ammoIndicatorFill = 1;
+        canFire = true;
         nextFireMark = 0;
         startPosition = new Vector3(0, -3.5f, 0);
         transform.position = startPosition;
@@ -55,7 +60,7 @@ public class Player : MonoBehaviour {
 
         uiManager = canvas.GetComponent<UIManager>();
 
-        Debug.Log("Screen Width: " + Screen.width);
+        //Debug.Log("Screen Width: " + Screen.width);
         mouseSensitivity = 12f;
 
         #if UNITY_EDITOR
@@ -146,7 +151,7 @@ public class Player : MonoBehaviour {
     }
 
     void FireLaser() {
-        if (Input.GetKeyDown(KeyCode.Return) && Time.time > nextFireMark) {
+        if (Input.GetKeyDown(KeyCode.Return) && Time.time > nextFireMark && canFire) {
             //Debug.Log("Fire!");
 
             //Center Lazers
@@ -154,12 +159,29 @@ public class Player : MonoBehaviour {
             
             if(trippleShotActive) {
                 Instantiate(trippleShotPrefab, spawnPosition1, Quaternion.identity);
+                ammoCount -= 1;
+                ammoIndicatorFill = ammoCount / 15f;
+                Debug.Log("Fill: " + ammoIndicatorFill);
+                uiManager.UpdateAmmoCount(ammoCount);
+                uiManager.UpdateAmmoCountIndicator(ammoIndicatorFill);
             } else {
                 Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
+                ammoCount -= 1;
+                ammoIndicatorFill = ammoCount / 15f;
+                Debug.Log("Fill: " + ammoIndicatorFill);
+                uiManager.UpdateAmmoCount(ammoCount);
+                uiManager.UpdateAmmoCountIndicator(ammoIndicatorFill);
+            }
+
+            if(ammoCount <=0) {
+                ammoCount = 0;
+                canFire = false;
+
             }
            
             nextFireMark = Time.time + fireDelay;
         }
+        //Debug.Log("AmmoCount: " + ammoCount);
     }
 
     void GetInput() {
@@ -301,17 +323,17 @@ public class Player : MonoBehaviour {
             shieldHitCount += 1;
             if(shieldHitCount == 1) {
                 shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, .66f);
-                Debug.Log("Shield Hit Count is 1");
+                //Debug.Log("Shield Hit Count is 1");
             } 
             
             if (shieldHitCount ==2) {
                 shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, .33f);
-                Debug.Log("Shield Hit Count is 2");
+                //Debug.Log("Shield Hit Count is 2");
             }
             
             if (shieldHitCount ==3) {
                 //if shield hit count is > 3 then deactivate the shield
-                Debug.Log("Shield hit count is 3");
+                //Debug.Log("Shield hit count is 3");
                 shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
                 shield.SetActive(false);
                 shieldActive = false;
