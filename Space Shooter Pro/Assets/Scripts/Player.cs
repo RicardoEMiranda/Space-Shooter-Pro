@@ -34,6 +34,7 @@ public class Player : MonoBehaviour {
     private Vector3 spawnPosition1;
     private Vector3 startPosition;
     private float nextFireMark;
+    private int shieldHitCount = 0;
   
 
     [SerializeField]
@@ -264,13 +265,14 @@ public class Player : MonoBehaviour {
     public void ShieldActive() {
         shieldActive = true;
         shield.SetActive(true);
+        shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         StartCoroutine(PowerDownShield());
 
     }
 
     IEnumerator PowerDownShield() {
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(15);
         shieldActive = false;
         shield.SetActive(false);
     }
@@ -293,6 +295,29 @@ public class Player : MonoBehaviour {
             Instantiate(explosion, explosionPosition, Quaternion.identity);
             TakeDamage();
             Destroy(other.gameObject);
+        }
+
+        if((other.transform.tag == "EnemyLaser" || other.transform.tag == "Enemy") && shieldActive) {
+            shieldHitCount += 1;
+            if(shieldHitCount == 1) {
+                shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, .66f);
+                Debug.Log("Shield Hit Count is 1");
+            } 
+            
+            if (shieldHitCount ==2) {
+                shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, .33f);
+                Debug.Log("Shield Hit Count is 2");
+            }
+            
+            if (shieldHitCount ==3) {
+                //if shield hit count is > 3 then deactivate the shield
+                Debug.Log("Shield hit count is 3");
+                shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                shield.SetActive(false);
+                shieldActive = false;
+                shieldHitCount = 0;
+            }
+            
         }
     }
 
