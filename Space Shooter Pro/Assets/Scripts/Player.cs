@@ -37,10 +37,13 @@ public class Player : MonoBehaviour {
     private int shieldHitCount = 0;
     private int ammoCount;
     private float ammoIndicatorFill;
+    private float ammoPowerUpDelay;
+    private float nextAmmoPowerUpMark;
+    private float lastAmmoSpawnTime;
   
 
     [SerializeField]
-    private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed, canFire;
+    private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed, canFire, canSpawnAmmo;
 
     private SpawnManager spawnManager;
     private UIManager uiManager;
@@ -49,6 +52,8 @@ public class Player : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
 
+        ammoPowerUpDelay = 5f;
+        nextAmmoPowerUpMark = Time.time + ammoPowerUpDelay;
         score = 0;
         ammoCount = 15;
         ammoIndicatorFill = 1;
@@ -104,6 +109,21 @@ public class Player : MonoBehaviour {
         CheckPlayerPosition();
         FireLaser();
         StartAudio();
+        CheckPlayabilityState();
+
+    }
+
+    private void CheckPlayabilityState() {
+
+        //if player is out of ammo, enemy's build up quickly and game becomes unplayable quickly
+        //The Spawn Manager does spawn powerups but the powerups are random and may take longer
+        //than feasible
+        
+
+        if(ammoCount == 0 && Time.time>nextAmmoPowerUpMark) {
+            spawnManager.SpawnAmmoPowerUp();
+            nextAmmoPowerUpMark = Time.time + ammoPowerUpDelay;
+        }
 
     }
 
@@ -261,6 +281,15 @@ public class Player : MonoBehaviour {
             //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 5.5f), 0);
             //Can use this in lieu of the 2 if/else statements above
         }
+    }
+
+    public void HealthPowerUpActive() {
+        health = 3;
+        uiManager.UpdateHealthSprites(health);
+        fire[0].SetActive(false);
+        fire[1].SetActive(false);
+        audioSource_SFX.Stop();
+        audioSource_SFX2.Stop();
     }
 
     public void AmmoPowerUpActive() {

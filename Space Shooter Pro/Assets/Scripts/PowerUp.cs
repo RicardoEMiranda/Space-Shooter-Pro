@@ -70,6 +70,11 @@ public class PowerUp : MonoBehaviour {
                         audioSource.clip = audioClip_PowerUp;
                         audioSource.Play();
                         break;
+                    case 4:
+                        player.HealthPowerUpActive();
+                        audioSource.clip = audioClip_PowerUp;
+                        audioSource.Play();
+                        break;
                     default:
                         Debug.Log("Warning, check Power Up IDs...");
                         break;

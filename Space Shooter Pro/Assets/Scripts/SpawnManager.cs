@@ -75,12 +75,22 @@ public class SpawnManager : MonoBehaviour {
 
     }
 
+    public void SpawnAmmoPowerUp() {
+        Vector3 powerUpSpawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
+        GameObject ammoPowerUp = Instantiate(powerUps[3], powerUpSpawnPosition, Quaternion.identity);
+        ammoPowerUp.transform.parent = powerUpContainer.transform;
+    }
+
     IEnumerator SpawnTrippleShotPowerup() {
         yield return new WaitForSeconds(2f);
         while (spawnTrippleShotPowerup) {
             powerUpSpawnDelay = Random.Range(5, 7);
             Vector3 powerUpSpawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
-            int powerUpIndex = Random.Range(0, 4);
+
+            //Ammo Powerup is powerID = 4. Random.Range finds IDs 0 to 2
+            //Intentionally excluding ID3 (ammo) because that will be handled separately when the player runs out of ammo
+            int powerUpIndex = Random.Range(0, 4); 
+
             GameObject newPowerUp = Instantiate(powerUps[powerUpIndex], powerUpSpawnPosition, Quaternion.identity);
             newPowerUp.transform.parent = powerUpContainer.transform;
             yield return new WaitForSeconds(powerUpSpawnDelay);
