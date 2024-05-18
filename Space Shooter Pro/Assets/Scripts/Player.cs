@@ -161,14 +161,14 @@ public class Player : MonoBehaviour {
                 Instantiate(trippleShotPrefab, spawnPosition1, Quaternion.identity);
                 ammoCount -= 1;
                 ammoIndicatorFill = ammoCount / 15f;
-                Debug.Log("Fill: " + ammoIndicatorFill);
+                //Debug.Log("Fill: " + ammoIndicatorFill);
                 uiManager.UpdateAmmoCount(ammoCount);
                 uiManager.UpdateAmmoCountIndicator(ammoIndicatorFill);
             } else {
                 Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
                 ammoCount -= 1;
                 ammoIndicatorFill = ammoCount / 15f;
-                Debug.Log("Fill: " + ammoIndicatorFill);
+                //Debug.Log("Fill: " + ammoIndicatorFill);
                 uiManager.UpdateAmmoCount(ammoCount);
                 uiManager.UpdateAmmoCountIndicator(ammoIndicatorFill);
             }
@@ -178,7 +178,6 @@ public class Player : MonoBehaviour {
                 canFire = false;
 
             }
-           
             nextFireMark = Time.time + fireDelay;
         }
         //Debug.Log("AmmoCount: " + ammoCount);
@@ -262,6 +261,14 @@ public class Player : MonoBehaviour {
             //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 5.5f), 0);
             //Can use this in lieu of the 2 if/else statements above
         }
+    }
+
+    public void AmmoPowerUpActive() {
+        ammoCount = 15;
+        ammoIndicatorFill = 1;
+        uiManager.UpdateAmmoCount(ammoCount);
+        uiManager.UpdateAmmoCountIndicator(ammoIndicatorFill);
+        canFire = true;
     }
 
     public void UpdateScore(int scoreValue) {

@@ -78,9 +78,9 @@ public class SpawnManager : MonoBehaviour {
     IEnumerator SpawnTrippleShotPowerup() {
         yield return new WaitForSeconds(2f);
         while (spawnTrippleShotPowerup) {
-            powerUpSpawnDelay = Random.Range(10, 20);
+            powerUpSpawnDelay = Random.Range(5, 7);
             Vector3 powerUpSpawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
-            int powerUpIndex = Random.Range(0, 3);
+            int powerUpIndex = Random.Range(0, 4);
             GameObject newPowerUp = Instantiate(powerUps[powerUpIndex], powerUpSpawnPosition, Quaternion.identity);
             newPowerUp.transform.parent = powerUpContainer.transform;
             yield return new WaitForSeconds(powerUpSpawnDelay);
