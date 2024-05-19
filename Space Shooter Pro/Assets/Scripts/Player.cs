@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour {
 
     [SerializeField]
-    private GameObject laserPrefab, trippleShotPrefab, shield, canvas, explosion, asteroid;
+    private GameObject laserPrefab, trippleShotPrefab, shield, radiusBlastPrefab, canvas, explosion, asteroid;
 
     [SerializeField]
     private GameObject[] fire;
@@ -39,11 +39,12 @@ public class Player : MonoBehaviour {
     private float ammoIndicatorFill;
     private float ammoPowerUpDelay;
     private float nextAmmoPowerUpMark;
-    private float lastAmmoSpawnTime;
+    private float powerUpActiveStartTime;
+    private float counterTime;
   
 
     [SerializeField]
-    private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed, canFire, canSpawnAmmo;
+    private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed, canFire, canSpawnAmmo, radiusBlastActive;
 
     private SpawnManager spawnManager;
     private UIManager uiManager;
@@ -118,12 +119,13 @@ public class Player : MonoBehaviour {
         //if player is out of ammo, enemy's build up quickly and game becomes unplayable quickly
         //The Spawn Manager does spawn powerups but the powerups are random and may take longer
         //than feasible
-        
 
         if(ammoCount == 0 && Time.time>nextAmmoPowerUpMark) {
             spawnManager.SpawnAmmoPowerUp();
             nextAmmoPowerUpMark = Time.time + ammoPowerUpDelay;
         }
+
+
 
     }
 
@@ -184,6 +186,9 @@ public class Player : MonoBehaviour {
                 //Debug.Log("Fill: " + ammoIndicatorFill);
                 uiManager.UpdateAmmoCount(ammoCount);
                 uiManager.UpdateAmmoCountIndicator(ammoIndicatorFill);
+            } else if(radiusBlastActive) {
+                //Debug.Log("Fire Radius Blast");
+                Instantiate(radiusBlastPrefab, spawnPosition1, Quaternion.identity);
             } else {
                 Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
                 ammoCount -= 1;
@@ -283,6 +288,14 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void RadiusBlastActive() {
+        radiusBlastActive = true;
+
+        powerUpActiveStartTime = Time.time;
+        StartCoroutine(PowerDownRadiusBlast());
+        //Debug.Log("Radius Blast Active: " + radiusBlastActive);
+    }
+
     public void HealthPowerUpActive() {
         health = 3;
         uiManager.UpdateHealthSprites(health);
@@ -326,6 +339,12 @@ public class Player : MonoBehaviour {
         shield.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         StartCoroutine(PowerDownShield());
 
+    }
+
+    IEnumerator PowerDownRadiusBlast() {
+        yield return new WaitForSeconds(5);
+        radiusBlastActive = false;
+        //Debug.Log("Radius Blast Active: " + radiusBlastActive);
     }
 
     IEnumerator PowerDownShield() {
