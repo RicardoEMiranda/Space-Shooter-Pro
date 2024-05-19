@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         scoreText.text = ": " + 0;
-        ammoCountText.text = "" + 15;
+        ammoCountText.text = "15/15";
         livesImage.sprite = lives[3];
         
     }
@@ -40,8 +40,6 @@ public class UIManager : MonoBehaviour {
         if(gameOver) {
             gameOverObject.GetComponent<Image>().color = Color.Lerp(colorStart, colorEnd, Mathf.PingPong(Time.time * strobeSpeed, 1));
         }
-
-
     }
 
     public void UpdateUIScore(int points) {
@@ -49,7 +47,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void UpdateAmmoCount(int ammoCount) {
-        ammoCountText.text = ammoCount.ToString();
+        ammoCountText.text = ammoCount.ToString() + "/15";
     }
 
     public void UpdateAmmoCountIndicator(float fill) {
