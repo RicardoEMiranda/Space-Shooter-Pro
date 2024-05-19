@@ -40,7 +40,6 @@ public class RadiusBlast : MonoBehaviour {
             StartCoroutine(StartBlastTimer());
         }
 
-
     }
 
     IEnumerator StartBlastTimer() {
@@ -50,8 +49,8 @@ public class RadiusBlast : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
 
-        //if (other.transform.tag == "Enemy") {
-            //Destroy(this.gameObject);
-        //}
+        if (other.transform.tag == "Enemy") {
+            Destroy(other.gameObject);
+        }
     }
 }
