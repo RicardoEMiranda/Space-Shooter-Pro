@@ -26,6 +26,9 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private Text text_TestData;
 
+    [SerializeField]
+    private CameraShake cameraShake;
+
     private float inputHorizontal;
     private float inputVertical;
     private bool inputLeftShift;
@@ -63,6 +66,13 @@ public class Player : MonoBehaviour {
         startPosition = new Vector3(0, -3.5f, 0);
         transform.position = startPosition;
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        cameraShake = GameObject.Find("CameraContainer").GetComponent<CameraShake>();
+
+        if(cameraShake == null) {
+            Debug.Log("No camera found");
+        } else {
+            Debug.Log("Camera found");
+        }
 
         uiManager = canvas.GetComponent<UIManager>();
 
@@ -145,6 +155,12 @@ public class Player : MonoBehaviour {
         if (shieldActive == false) {
             health -= 1;
             uiManager.UpdateHealthSprites(health);
+            StartCoroutine(cameraShake.ShakeCamera());
+
+            if(cameraShake.shakingFinished) {
+                //Debug.Log("Shaking Finished");
+                //StartCoroutine(cameraShake.RecenterCamera());
+            }
             
             if(health == 2) {
                 fireObjectIndex = Random.Range(0, 2);
