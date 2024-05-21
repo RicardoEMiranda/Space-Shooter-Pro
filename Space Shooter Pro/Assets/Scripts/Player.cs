@@ -69,9 +69,9 @@ public class Player : MonoBehaviour {
         cameraShake = GameObject.Find("CameraContainer").GetComponent<CameraShake>();
 
         if(cameraShake == null) {
-            Debug.Log("No camera found");
+            //Debug.Log("No camera found");
         } else {
-            Debug.Log("Camera found");
+            //Debug.Log("Camera found");
         }
 
         uiManager = canvas.GetComponent<UIManager>();

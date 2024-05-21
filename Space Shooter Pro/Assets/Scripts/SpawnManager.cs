@@ -54,7 +54,7 @@ public class SpawnManager : MonoBehaviour {
 
             //Randomize enemy variant to spawn
             //enemyInstance = Random.Range(0, noOfEnemyVariants); //Instantiates even distribution among all the variants
-            enemyInstance = GetRandomValue(); //this one returns enemy variant 0 with 76% probability and enemy variant 1 with 25% probability
+            enemyInstance = GetRandomValue(); //this one returns enemy variant 0 with 37.5%, enemy variant 1 with 37.5% probability and enemy variant 2 with 25% probability
             //Debug.Log("Enemy Instance: " + enemyInstance);
 
             Vector3 spawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
@@ -67,10 +67,12 @@ public class SpawnManager : MonoBehaviour {
     private int GetRandomValue() {
         //returns enemy variant 0 with 76% probability and enemy variant 1 with 25% probability
         float randomFloat = Random.Range(0f,1f);
-        if(randomFloat <= .75f) {
+        if(randomFloat <= .375f) {
             return 0;
+        } else if (randomFloat >.375f && randomFloat<.75f) {
+            return 1; 
         } else {
-            return 1;
+            return 2;
         }
 
     }

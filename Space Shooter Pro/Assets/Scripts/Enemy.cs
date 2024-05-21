@@ -18,10 +18,22 @@ public class Enemy : MonoBehaviour {
 
     private Player player;
     private bool firedEnemyLaser;
+    private GameObject leftScreenNavPoint;
+    private GameObject rightScreenNavPoint;
+    private Vector3 enemyNavigationVector;
+    private bool navVectorCalculated;
 
     // Start is called before the first frame update
     void Start() {
         player = GameObject.Find("Player").GetComponent<Player>();
+        leftScreenNavPoint = GameObject.Find("LeftScreenNavPoint");
+        rightScreenNavPoint = GameObject.Find("RightScreenNavPoint");
+
+        if (leftScreenNavPoint && rightScreenNavPoint != null) {
+            //Debug.Log("Nav points found");
+        } else {
+            Debug.Log("Enemy navigation points not in the scene.");
+        }
     }
 
     // Update is called once per frame
@@ -36,17 +48,36 @@ public class Enemy : MonoBehaviour {
             ResetPosition();
         }
 
-        if(enemyValue == 50 && transform.position.y > 9) {
+        if((enemyValue == 50 || enemyValue == 100) && transform.position.y > 9) {
             //ensures that if the enemy variant with value 50 is reinstantiated (player did not destroy it the first time)
             //at the top of the game scene, reset the firedEnemyLaser variable to ensure it fires again as if it's a new enemy.
             firedEnemyLaser = false;
         }
 
         //if enemy value is 50 then run the fire laser routine
-        if(enemyValue == 50 && !firedEnemyLaser) {
+        if((enemyValue == 50 || enemyValue ==100) && !firedEnemyLaser) {
             FireEnemyLaser();
         }
+
+        if(enemyValue == 100) {
+            ExecuteSpecialManeuver();
+        }
         
+    }
+
+    private void ExecuteSpecialManeuver() {
+        if(transform.position.x < 0 && firedEnemyLaser && !navVectorCalculated && transform.position.y < 7.3f) {
+            //handle diagonal movement for when the enemy is on the left side of the screen
+            navVectorCalculated = true;
+            enemyNavigationVector = rightScreenNavPoint.transform.position - transform.position;
+
+        } else if (transform.position.x > 0 && firedEnemyLaser && !navVectorCalculated && transform.position.y < 7.3f) {
+            //handle diagonal movement for when the enemy variant is on the right side of the screen
+            navVectorCalculated = true;
+            enemyNavigationVector = leftScreenNavPoint.transform.position - transform.position;
+            
+        }
+        transform.Translate(enemyNavigationVector.normalized * speed * Time.deltaTime, Space.World);
     }
 
     private void FireEnemyLaser() {
