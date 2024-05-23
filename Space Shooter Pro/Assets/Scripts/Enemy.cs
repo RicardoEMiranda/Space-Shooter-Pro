@@ -23,6 +23,9 @@ public class Enemy : MonoBehaviour {
     private SpawnManager spawnManager;
     private Vector3 enemyNavigationVector;
     private bool navVectorCalculated;
+    private GameObject shield;
+    private int shieldState;
+    private bool shieldActive;
 
     // Start is called before the first frame update
     void Start() {
@@ -35,6 +38,24 @@ public class Enemy : MonoBehaviour {
             //Debug.Log("Nav points found");
         } else {
             Debug.Log("Enemy navigation points not in the scene.");
+        }
+
+        if(enemyValue == 100) {
+            //if enemy value is 100, this is the special enemy 
+            //Activate a shield randomly for 33% of the enemy variants of this type
+            shield =  this.gameObject.transform.GetChild(0).gameObject;
+            
+            if(shield != null) {
+
+                shieldState = GetRandomValue();
+                if (shieldState == 1) {
+                    shield.SetActive(true);
+                    shieldActive = true;
+                }
+                //Debug.Log("Shield Found");
+            } else {
+                Debug.Log("Shield expected to be attached but not found.");
+            }
         }
     }
 
@@ -71,6 +92,16 @@ public class Enemy : MonoBehaviour {
         
     }
 
+    private int GetRandomValue() {
+         //returns enemy variant 0 with 50% probability and enemy variant 1 with 50% probability
+         float randomFloat = Random.Range(0f, 1f);
+         if (randomFloat < .5f) {
+             return 0;
+         } else {
+             return 1;
+         } 
+    }
+
     private void ExecuteSpecialManeuver() {
         if(transform.position.x < 0 && firedEnemyLaser && !navVectorCalculated && transform.position.y < 7.3f) {
             //handle diagonal movement for when the enemy is on the left side of the screen
@@ -99,12 +130,8 @@ public class Enemy : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        //Debug.Log("Hit! " + other.transform.name);
-
-        //if other is Player
-        //damage Player
-        //Destroy this object
-        if(other.transform.tag == "Player") {
+        
+        if(other.transform.tag == "Player" & !shieldActive) {
 
             //damage Player
             Player player = other.transform.GetComponent<Player>();
@@ -126,7 +153,7 @@ public class Enemy : MonoBehaviour {
 
         //if other is Laser
         //Destroy this object
-        if(other.transform.tag == "Laser") {
+        if(other.transform.tag == "Laser" && !shieldActive) {
             Destroy(other.gameObject);
 
             //If Enemy hit by laser, add +10 points to player score
@@ -135,6 +162,12 @@ public class Enemy : MonoBehaviour {
             }
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
+        }
+
+        if((other.transform.tag == "Laser" || other.transform.tag =="Player") && enemyValue == 100 && shieldActive) {
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            shield.SetActive(false);
+            shieldActive = false;
         }
 
     }

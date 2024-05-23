@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour {
         } else {
             Debug.Log("Wave Timer Exception at GameManager");
         }
-        Debug.Log("Wave: " + waveNumber + "   Wave Timer: " + waveTimer);
+        //Debug.Log("Wave: " + waveNumber + "   Wave Timer: " + waveTimer);
         }
     }
 
