@@ -46,6 +46,7 @@ public class SpawnManager : MonoBehaviour {
     public void StartSpawning() {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnTrippleShotPowerup());
+        StartCoroutine(SpawnEnemyMine());
     }
 
     IEnumerator SpawnEnemyRoutine() {
@@ -106,6 +107,17 @@ public class SpawnManager : MonoBehaviour {
         Vector3 powerUpSpawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
         GameObject ammoPowerUp = Instantiate(powerUps[3], powerUpSpawnPosition, Quaternion.identity);
         ammoPowerUp.transform.parent = powerUpContainer.transform;
+    }
+
+    IEnumerator SpawnEnemyMine() {
+        while (continueSpawning) {
+            float delay = Random.Range(7, 10);
+            yield return new WaitForSeconds(delay);
+            Vector3 powerUpSpawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
+            GameObject mine = Instantiate(powerUps[6], powerUpSpawnPosition, Quaternion.identity);
+            mine.transform.parent = powerUpContainer.transform;
+        }
+        
     }
 
     IEnumerator SpawnTrippleShotPowerup() {

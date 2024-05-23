@@ -16,6 +16,10 @@ public class PowerUp : MonoBehaviour {
     [SerializeField]
     private AudioClip audioClip_PowerUp;
 
+    [SerializeField]
+    private GameObject explosion;
+
+
     // Start is called before the first frame update
     void Start() {
         audioSource = GetComponent<AudioSource>();
@@ -79,6 +83,10 @@ public class PowerUp : MonoBehaviour {
                         player.RadiusBlastActive();
                         audioSource.clip = audioClip_PowerUp;
                         audioSource.Play();
+                        break;
+                    case 6:
+                        player.TakeDamage();
+                        Instantiate(explosion, transform.position, Quaternion.identity);
                         break;
                     default:
                         Debug.Log("Warning, check Power Up IDs...");
