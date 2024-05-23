@@ -85,7 +85,6 @@ public class SpawnManager : MonoBehaviour {
 
             newEnemy.transform.parent = enemyContainer.transform;
             
-            
             yield return new WaitForSeconds(spawnDelay);
             previousSpawnTime = currentSpawnTime;
             //Debug.Log("Wave: " + gameManager.waveNumber + "  Time: " + gameManager.waveTimer);

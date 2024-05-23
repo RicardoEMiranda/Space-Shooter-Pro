@@ -57,14 +57,15 @@ public class UIManager : MonoBehaviour {
 
     public void AlertIncomingWave(int wave) {
         if(wave ==0) {
-            StartCoroutine(DisplayWaveMessage(wave));
+            //StartCoroutine(DisplayWaveMessage(wave));
         } else if (wave == 1) {
-            StartCoroutine(DisplayWaveMessage(wave));
+            //StartCoroutine(DisplayWaveMessage(wave));
         } else if (wave == 2) {
-            StartCoroutine(DisplayWaveMessage(wave));
+            //StartCoroutine(DisplayWaveMessage(wave));
         } else if (wave == 3) {
-            StartCoroutine(DisplayWaveMessage(wave));
+            //StartCoroutine(DisplayWaveMessage(wave));
         }
+        StartCoroutine(DisplayWaveMessage(wave));
 
     }
 
@@ -76,10 +77,7 @@ public class UIManager : MonoBehaviour {
             yield return new WaitForSeconds(3);
             messageText.gameObject.SetActive(false);
         }
-        //messageText.gameObject.SetActive(true);
-        //messageText.text = "FIRST WAVE!";
-        //yield return new WaitForSeconds(3);
-        //messageText.gameObject.SetActive(false);
+        
     }
 
     public void UpdateUIScore(int points) {

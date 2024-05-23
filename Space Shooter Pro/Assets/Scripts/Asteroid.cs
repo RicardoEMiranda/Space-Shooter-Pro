@@ -12,9 +12,12 @@ public class Asteroid : MonoBehaviour {
 
     private float speed = 12f;
 
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start() {
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -29,6 +32,7 @@ public class Asteroid : MonoBehaviour {
             Instantiate(explosionBig, transform.position, Quaternion.identity);
             spawnManager.StartSpawning();
             Destroy(other.gameObject);
+            gameManager.StartWaveTimer();
             Destroy(this.gameObject);
         }
 

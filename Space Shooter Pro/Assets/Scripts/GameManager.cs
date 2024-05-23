@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public int waveNumber;
     public bool restartState;
     private float restartTime;
+    private bool asteroidDestroyed;
 
     // Start is called before the first frame update
     void Start() {
@@ -36,14 +37,15 @@ public class GameManager : MonoBehaviour {
 
     private void ManageEnemyWaves() {
         //keep track of game play running time
-        waveTimer = Time.time - restartTime;
-        Debug.Log("Wave Timer: " + waveTimer);
+        
+        if (asteroidDestroyed) { 
+        waveTimer += Time.deltaTime;
 
-        if(waveTimer < 20f) {
+        if (waveTimer < 20f) {
             //For the first 20 seconds
             //Wave 0, tell spawn manager to spawn an enemy once every 2-3 seconds
             waveNumber = 0;
-        } else if(waveTimer >= 20f && waveTimer < 45f) {
+        } else if (waveTimer >= 20f && waveTimer < 45f) {
             //Between 21-45 seconds, Wave 1, tell spawn manager to spawn an enemy once every 1-2 seconds
             waveNumber = 1;
         } else if (waveTimer >= 45 && waveTimer < 60) {
@@ -56,17 +58,24 @@ public class GameManager : MonoBehaviour {
         } else {
             Debug.Log("Wave Timer Exception at GameManager");
         }
-        //Debug.Log("Wave: " + waveNumber + "   Wave Timer: " + waveTimer);
-        
+        Debug.Log("Wave: " + waveNumber + "   Wave Timer: " + waveTimer);
+        }
+    }
+
+    public void StartWaveTimer() {
+        waveTimer = 0;
+        waveNumber = 0;
+        asteroidDestroyed = true;
     }
 
     public void RestartButtonClicked() {
         Debug.Log("Restart clicked");
         SceneManager.LoadScene("GameScene");
-        waveNumber = 0;
-        restartState = true;
-        restartTime = Time.time;
-        Debug.Log("Wave Number: " + waveNumber);
+        StartWaveTimer();
+        //waveNumber = 0;
+        //restartState = true;
+        //restartTime = Time.time;
+        //Debug.Log("Wave Number: " + waveNumber);
     }
 
     public void PauseButtonClicked() {
