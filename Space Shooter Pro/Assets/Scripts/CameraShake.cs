@@ -12,7 +12,7 @@ public class CameraShake : MonoBehaviour {
     public bool shakingFinished;
     
     void Start()  {
-        originalPosition = this.transform.position;
+        originalPosition = new Vector3(0, 1, -12);
         timer = 0;
         settleTimer = 0;
         settleTime = .5f;
@@ -33,15 +33,23 @@ public class CameraShake : MonoBehaviour {
         }
         timer = 0;
         shakingFinished = true;
+        //this.transform.position = originalPosition;
     }
 
     public IEnumerator RecenterCamera() {
-        while (settleTimer < settleTime) {
+        //Vector3 positionDelta = originalPosition - this.transform.position;
+        //float positionDeltaMagnitude = positionDelta.magnitude;
+        //while (positionDeltaMagnitude > .01) {
+            //positionDelta = originalPosition - this.transform.position;
+            //positionDeltaMagnitude = positionDelta.magnitude;
+            while (settleTimer < settleTime) {
+            //Debug.Log("Settling");
             settleTimer += Time.deltaTime;
             this.transform.position = Vector3.Lerp(this.transform.position, originalPosition, .1f);
             yield return null;
         }
         settleTimer = 0;
+        this.transform.position = originalPosition;
     }
 
 

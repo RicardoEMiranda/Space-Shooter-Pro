@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour {
     private bool firedEnemyLaser;
     private GameObject leftScreenNavPoint;
     private GameObject rightScreenNavPoint;
+    private SpawnManager spawnManager;
     private Vector3 enemyNavigationVector;
     private bool navVectorCalculated;
 
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour {
         player = GameObject.Find("Player").GetComponent<Player>();
         leftScreenNavPoint = GameObject.Find("LeftScreenNavPoint");
         rightScreenNavPoint = GameObject.Find("RightScreenNavPoint");
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
         if (leftScreenNavPoint && rightScreenNavPoint != null) {
             //Debug.Log("Nav points found");
@@ -61,6 +63,10 @@ public class Enemy : MonoBehaviour {
 
         if(enemyValue == 100) {
             ExecuteSpecialManeuver();
+        }
+
+        if(!spawnManager.continueSpawning && (transform.position.y<-9.5f || transform.position.y>9.7f)) {
+            Destroy(this.gameObject);
         }
         
     }

@@ -16,20 +16,31 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField]
     private GameObject[] powerUps;
 
-    private bool continueSpawning = true;
+    public bool continueSpawning = true;
     private bool spawnTrippleShotPowerup = true;
     private float powerUpSpawnDelay;
     private int noOfEnemyVariants;
     private int enemyInstance;
+    private GameManager gameManager;
+    private int enemyCount;
+    private float spawnDelay;
+    private float currentSpawnTime;
+    private float previousSpawnTime;
+    private UIManager uiManager;
 
 
     // Start is called before the first frame update
     void Start() {
         noOfEnemyVariants = enemyPrefab.Length;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //uiManager = GameObject.Find("Canvas_UI").GetComponent<UIManager>();
+        enemyCount = 0;
+        uiManager = GameObject.Find("Canvas_UI").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
     void Update() {
+        //Debug.Log("Wave: " + gameManager.waveNumber + "   Wave Timer: " + gameManager.waveTimer);
 
     }
 
@@ -40,27 +51,44 @@ public class SpawnManager : MonoBehaviour {
 
     IEnumerator SpawnEnemyRoutine() {
 
-        //infinite while loop
-        //instantiate enemy prefab
-        //yield wait for 5 seconds
-
-        //yield return null; //waits 1 frame before executing rest of this routine
-        //thing to do after yield return null, this is here just as an example
-
-        //yield return new WaitForSeconds(5);
-        //do this here after 5 seconds
         yield return new WaitForSeconds(2f);
         while (continueSpawning) {
-
+            
             //Randomize enemy variant to spawn
             //enemyInstance = Random.Range(0, noOfEnemyVariants); //Instantiates even distribution among all the variants
             enemyInstance = GetRandomValue(); //this one returns enemy variant 0 with 37.5%, enemy variant 1 with 37.5% probability and enemy variant 2 with 25% probability
             //Debug.Log("Enemy Instance: " + enemyInstance);
 
+            if(gameManager.waveNumber == 0) {
+                //For the first 20 seconds
+                //Wave 0, tell spawn manager to spawn an enemy once every 2-3 seconds
+                spawnDelay = Random.Range(2f, 3f);
+                uiManager.AlertIncomingWave(gameManager.waveNumber);
+            } else if (gameManager.waveNumber == 1) {
+                //Between 21-45 seconds, Wave 1, tell spawn manager to spawn an enemy once every 1-2 seconds
+                spawnDelay = Random.Range(1f, 1.5f);
+                uiManager.AlertIncomingWave(gameManager.waveNumber);
+            } else if (gameManager.waveNumber == 2) {
+                //Between 45 - 60 seconds, Wave 2, tell spawn manager to spawn an enemy once every .5 - 1 seconds
+                spawnDelay = Random.Range(.55f, .90f);
+                uiManager.AlertIncomingWave(gameManager.waveNumber);
+            } else if (gameManager.waveNumber == 3) {
+                //continueSpawning = false;
+                uiManager.AlertIncomingWave(gameManager.waveNumber);
+                continueSpawning = false;
+            }
+
             Vector3 spawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
             GameObject newEnemy = Instantiate(enemyPrefab[enemyInstance], spawnPosition, Quaternion.identity);
+            enemyCount += 1;
+            currentSpawnTime = Time.time;
+
             newEnemy.transform.parent = enemyContainer.transform;
-            yield return new WaitForSeconds(1);
+            
+            
+            yield return new WaitForSeconds(spawnDelay);
+            previousSpawnTime = currentSpawnTime;
+            //Debug.Log("Wave: " + gameManager.waveNumber + "  Time: " + gameManager.waveTimer);
         }
     }
 
@@ -91,7 +119,7 @@ public class SpawnManager : MonoBehaviour {
 
             //Ammo Powerup is powerID = 4. Random.Range finds IDs 0 to 2
             //Intentionally excluding ID3 (ammo) because that will be handled separately when the player runs out of ammo
-            int powerUpIndex = Random.Range(0, 5); 
+            int powerUpIndex = Random.Range(0, 6); 
 
             GameObject newPowerUp = Instantiate(powerUps[powerUpIndex], powerUpSpawnPosition, Quaternion.identity);
             newPowerUp.transform.parent = powerUpContainer.transform;

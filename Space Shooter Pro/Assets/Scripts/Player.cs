@@ -68,6 +68,10 @@ public class Player : MonoBehaviour {
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         cameraShake = GameObject.Find("CameraContainer").GetComponent<CameraShake>();
 
+        if(shield.activeSelf) {
+            shieldActive = true;
+        }
+
         if(cameraShake == null) {
             //Debug.Log("No camera found");
         } else {
@@ -135,8 +139,6 @@ public class Player : MonoBehaviour {
             nextAmmoPowerUpMark = Time.time + ammoPowerUpDelay;
         }
 
-
-
     }
 
     private void StartAudio() {
@@ -159,7 +161,7 @@ public class Player : MonoBehaviour {
 
             if(cameraShake.shakingFinished) {
                 //Debug.Log("Shaking Finished");
-                //StartCoroutine(cameraShake.RecenterCamera());
+                StartCoroutine(cameraShake.RecenterCamera());
             }
             
             if(health == 2) {
@@ -177,7 +179,6 @@ public class Player : MonoBehaviour {
                 audioSource_SFX2.Play();
 
             }
-
         }
 
         if (health < 1) {
@@ -344,7 +345,7 @@ public class Player : MonoBehaviour {
     }
 
     public void SpeedPowerUpActive() {
-        speedBoost = 2;
+        speedBoost = 3;
         speedActive = true;
         StartCoroutine(PowerDownSpeed());
     }
