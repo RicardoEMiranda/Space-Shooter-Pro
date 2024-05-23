@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour {
     public float waveTimer;
     public int waveNumber;
     public bool restartState;
-    private float restartTime;
     private bool asteroidDestroyed;
 
     // Start is called before the first frame update
@@ -21,7 +20,6 @@ public class GameManager : MonoBehaviour {
         waveTimer = 0;
         waveNumber = 0;
         restartState = false;
-        restartTime = 0;
 
         if(spawnManager == null) {
             Debug.Log("Spawn Manager object not found");

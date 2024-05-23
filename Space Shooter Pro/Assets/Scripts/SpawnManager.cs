@@ -25,7 +25,6 @@ public class SpawnManager : MonoBehaviour {
     private int enemyCount;
     private float spawnDelay;
     private float currentSpawnTime;
-    private float previousSpawnTime;
     private UIManager uiManager;
 
 
@@ -70,7 +69,7 @@ public class SpawnManager : MonoBehaviour {
                 uiManager.AlertIncomingWave(gameManager.waveNumber);
             } else if (gameManager.waveNumber == 2) {
                 //Between 45 - 60 seconds, Wave 2, tell spawn manager to spawn an enemy once every .5 - 1 seconds
-                spawnDelay = Random.Range(.55f, .90f);
+                spawnDelay = Random.Range(.55f, 1f);
                 uiManager.AlertIncomingWave(gameManager.waveNumber);
             } else if (gameManager.waveNumber == 3) {
                 //continueSpawning = false;
@@ -86,7 +85,6 @@ public class SpawnManager : MonoBehaviour {
             newEnemy.transform.parent = enemyContainer.transform;
             
             yield return new WaitForSeconds(spawnDelay);
-            previousSpawnTime = currentSpawnTime;
             //Debug.Log("Wave: " + gameManager.waveNumber + "  Time: " + gameManager.waveTimer);
         }
     }
