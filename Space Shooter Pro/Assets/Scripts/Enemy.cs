@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour {
         leftScreenNavPoint = GameObject.Find("LeftScreenNavPoint");
         rightScreenNavPoint = GameObject.Find("RightScreenNavPoint");
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        firedEnemyLaser = false;
 
         if (leftScreenNavPoint && rightScreenNavPoint != null) {
             //Debug.Log("Nav points found");
@@ -69,6 +70,10 @@ public class Enemy : MonoBehaviour {
         if(transform.position.y < -10f) {
             //reset start position
             ResetPosition();
+
+            if(enemyValue == 10) {
+                firedEnemyLaser = false;
+            }
         }
 
         if((enemyValue == 50 || enemyValue == 100) && transform.position.y > 9) {
@@ -89,7 +94,28 @@ public class Enemy : MonoBehaviour {
         if(!spawnManager.continueSpawning && (transform.position.y<-9.5f || transform.position.y>9.7f)) {
             Destroy(this.gameObject);
         }
+
+        if(enemyValue == 10) {
+            FireBackwards();
+        }
         
+    }
+
+    private void FireBackwards() {
+        GameObject player_ = GameObject.Find("Player");
+        if(player_ != null) {
+            float yDelta = transform.position.y - player_.transform.position.y;
+            if (yDelta < -1f && !firedEnemyLaser) {
+                Debug.Log("Enemy behind player");
+                Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y + .65f, transform.position.z);
+                //Instantiate(enemyLaserPrefab, spawnPosition, Quaternion.identity);
+                GameObject backwardLaser = Instantiate(enemyLaserPrefab, spawnPosition, Quaternion.identity);
+                backwardLaser.GetComponent<EnemyLaser>().SetOppositeDirection();
+                firedEnemyLaser = true;
+            }
+        } else {
+            Debug.Log("Player null");
+        }
     }
 
     private int GetRandomValue() {

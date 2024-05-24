@@ -52,6 +52,7 @@ MonoBehaviour:
     type: 3}
   enemyLaserPrefab: {fileID: 4353136450436082057, guid: 810beddeb0e61624aa8448c6177c0ba6,
     type: 3}
+  toggleFeatures: 0
 --- !u!212 &9122650926868874701
 SpriteRenderer:
   m_ObjectHideFlags: 0
