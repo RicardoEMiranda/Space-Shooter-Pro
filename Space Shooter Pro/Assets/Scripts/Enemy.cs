@@ -27,6 +27,11 @@ public class Enemy : MonoBehaviour {
     private int shieldState;
     private bool shieldActive;
 
+    private int evasionSpeed;
+    private int evasionDirection;
+    public bool executeEvasiveManeuver;
+    private bool evadedOnce;
+
     // Start is called before the first frame update
     void Start() {
         player = GameObject.Find("Player").GetComponent<Player>();
@@ -34,6 +39,12 @@ public class Enemy : MonoBehaviour {
         rightScreenNavPoint = GameObject.Find("RightScreenNavPoint");
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         firedEnemyLaser = false;
+
+        evasionSpeed = 3;
+        //yields -1 or 1. But, since executing in Update( ), make sure
+        //you only calculate evasion direction only once
+        evasionDirection = Random.Range(0, 2) * 2 - 1;
+
 
         if (leftScreenNavPoint && rightScreenNavPoint != null) {
             //Debug.Log("Nav points found");
@@ -98,7 +109,32 @@ public class Enemy : MonoBehaviour {
         if(enemyValue == 10) {
             FireBackwards();
         }
+
+        if(executeEvasiveManeuver) {
+            EvasiveManeuver();
+        }
         
+    }
+
+    public void EvasiveManeuver() {
+        //Debug.Log("Evasive Maneuver");
+        
+        StartCoroutine(PowerDownEvasiveManeuver());
+        //transform.Translate(Vector3.right* evasionDirection * evasionSpeed * Time.deltaTime, Space.World);
+
+        if(transform.position.x > 6) {
+            transform.position = new Vector3(6f, transform.position.y, transform.position.z);
+        } else if(transform.position.x < -6) {
+            transform.position = new Vector3(-6f, transform.position.y, transform.position.z);
+        } else {
+            transform.Translate(Vector3.right * evasionDirection * evasionSpeed * Time.deltaTime, Space.World);
+        }
+    }
+
+    IEnumerator PowerDownEvasiveManeuver() {
+        yield return new WaitForSeconds(1f);
+        executeEvasiveManeuver = false;
+        evasionDirection = evasionDirection * -1;
     }
 
     private void FireBackwards() {

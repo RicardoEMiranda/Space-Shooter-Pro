@@ -87,8 +87,12 @@ public class SpawnManager : MonoBehaviour {
             if(wingManDistance < 1.5f) {
                 float delta = 1.5f - wingManDistance;
                 spawnPosition.x = spawnPosition.x + delta;
-                if(Mathf.Abs(spawnPosition.x) > 6) {
-                    spawnPosition.x = spawnPosition.x - 3f;
+                if(spawnPosition.x > 6) {
+                    spawnPosition.x = 3f;
+                } 
+
+                if(spawnPosition.x < -6) {
+                    spawnPosition.x = -3f;
                 }
             }
             
