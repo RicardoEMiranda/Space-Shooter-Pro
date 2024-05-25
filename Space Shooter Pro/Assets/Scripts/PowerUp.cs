@@ -18,11 +18,20 @@ public class PowerUp : MonoBehaviour {
 
     [SerializeField]
     private GameObject explosion;
+    private GameObject playerGO;
+    private Vector3 navigationVector;
+    private bool isGoodPowerup;
+    private float attractionSpeed = 2f;
 
 
     // Start is called before the first frame update
     void Start() {
         audioSource = GetComponent<AudioSource>();
+        playerGO = GameObject.Find("Player");
+
+        if(powerUpID != 6) {
+            isGoodPowerup = true;
+        }
     }
 
     // Update is called once per frame
@@ -36,7 +45,11 @@ public class PowerUp : MonoBehaviour {
             Destroy(this.gameObject);
         }
 
-        //detect collision with player and destroy self after collision
+        if(Input.GetKey(KeyCode.C) && isGoodPowerup) {
+            //Debug.Log("C Key Pressed!");
+            navigationVector = playerGO.transform.position - transform.position;
+            transform.Translate(navigationVector * attractionSpeed * Time.deltaTime);
+        }
 
     }
 
