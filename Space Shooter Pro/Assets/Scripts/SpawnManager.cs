@@ -26,6 +26,7 @@ public class SpawnManager : MonoBehaviour {
     private float spawnDelay;
     private float currentSpawnTime;
     private UIManager uiManager;
+    private float previousSpawnPosition;
 
 
     // Start is called before the first frame update
@@ -35,6 +36,7 @@ public class SpawnManager : MonoBehaviour {
         //uiManager = GameObject.Find("Canvas_UI").GetComponent<UIManager>();
         enemyCount = 0;
         uiManager = GameObject.Find("Canvas_UI").GetComponent<UIManager>();
+        previousSpawnPosition = 0;
     }
 
     // Update is called once per frame
@@ -79,6 +81,19 @@ public class SpawnManager : MonoBehaviour {
             }
 
             Vector3 spawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
+
+            //ensure proper distance between enemies so they are not spawned on top of each other
+            float wingManDistance = Mathf.Abs(spawnPosition.x - previousSpawnPosition);
+            if(wingManDistance < 1.5f) {
+                float delta = 1.5f - wingManDistance;
+                spawnPosition.x = spawnPosition.x + delta;
+                if(Mathf.Abs(spawnPosition.x) > 6) {
+                    spawnPosition.x = spawnPosition.x - 3f;
+                }
+            }
+            
+
+            //Debug.Log("Previous: " + previousSpawnPosition + "   Current: " + spawnPosition.x);
             GameObject newEnemy = Instantiate(enemyPrefab[enemyInstance], spawnPosition, Quaternion.identity);
             enemyCount += 1;
             currentSpawnTime = Time.time;
@@ -86,6 +101,7 @@ public class SpawnManager : MonoBehaviour {
             newEnemy.transform.parent = enemyContainer.transform;
             
             yield return new WaitForSeconds(spawnDelay);
+            previousSpawnPosition = spawnPosition.x;
             //Debug.Log("Wave: " + gameManager.waveNumber + "  Time: " + gameManager.waveTimer);
         }
     }
