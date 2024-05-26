@@ -148,7 +148,7 @@ public class SpawnManager : MonoBehaviour {
 
             //Ammo Powerup is powerID = 4. Random.Range finds IDs 0 to 2
             //Intentionally excluding ID3 (ammo) because that will be handled separately when the player runs out of ammo
-            int powerUpIndex = Random.Range(0, 6); 
+            int powerUpIndex = Random.Range(0, 8); 
 
             GameObject newPowerUp = Instantiate(powerUps[powerUpIndex], powerUpSpawnPosition, Quaternion.identity);
             newPowerUp.transform.parent = powerUpContainer.transform;

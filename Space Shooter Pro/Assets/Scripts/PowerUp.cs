@@ -101,6 +101,12 @@ public class PowerUp : MonoBehaviour {
                         player.TakeDamage();
                         Instantiate(explosion, transform.position, Quaternion.identity);
                         break;
+                    case 7:
+                        //Debug.Log("Case: Missle Powerup");
+                        audioSource.clip = audioClip_PowerUp;
+                        audioSource.Play();
+                        player.MisslePowerUpActive();
+                        break;
                     default:
                         Debug.Log("Warning, check Power Up IDs...");
                         break;

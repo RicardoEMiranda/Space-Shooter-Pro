@@ -224,6 +224,7 @@ public class Enemy : MonoBehaviour {
             }
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
+            
         }
 
         if((other.transform.tag == "Laser" || other.transform.tag =="Player") && enemyValue == 100 && shieldActive) {

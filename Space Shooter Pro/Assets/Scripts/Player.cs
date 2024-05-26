@@ -6,7 +6,10 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour {
 
     [SerializeField]
-    private GameObject laserPrefab, trippleShotPrefab, shield, radiusBlastPrefab, canvas, explosion, asteroid;
+    private GameObject laserPrefab, trippleShotPrefab, shield, radiusBlastPrefab;
+
+    [SerializeField]
+    private GameObject canvas, explosion, asteroid, misslePrefab;
 
     [SerializeField]
     private GameObject[] fire;
@@ -36,6 +39,7 @@ public class Player : MonoBehaviour {
     private float mouseY;
     private Vector3 spawnPosition1;
     private Vector3 startPosition;
+    private Vector3 missleStartPosition;
     private float nextFireMark;
     private int shieldHitCount = 0;
     private int ammoCount;
@@ -44,10 +48,14 @@ public class Player : MonoBehaviour {
     private float nextAmmoPowerUpMark;
     private float powerUpActiveStartTime;
     private float counterTime;
+    private float missleLaunchX;
   
 
     [SerializeField]
     private bool trippleShotActive, shieldActive, speedActive, asteroidDestroyed, canFire, canSpawnAmmo, radiusBlastActive;
+
+    [SerializeField]
+    private bool misslePowerUpActive;
 
     private SpawnManager spawnManager;
     private UIManager uiManager;
@@ -67,6 +75,7 @@ public class Player : MonoBehaviour {
         transform.position = startPosition;
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         cameraShake = GameObject.Find("CameraContainer").GetComponent<CameraShake>();
+        missleLaunchX = -.5f;
 
         if(shield.activeSelf) {
             shieldActive = true;
@@ -177,7 +186,6 @@ public class Player : MonoBehaviour {
                 audioSource_SFX2.clip = audioClip_AIWarning;
                 audioSource_SFX.Play();
                 audioSource_SFX2.Play();
-
             }
         }
 
@@ -195,17 +203,24 @@ public class Player : MonoBehaviour {
 
             //Center Lazers
             spawnPosition1 = new Vector3(transform.position.x, transform.position.y, 0);
-            
-            if(trippleShotActive) {
+
+            if (trippleShotActive) {
                 Instantiate(trippleShotPrefab, spawnPosition1, Quaternion.identity);
                 ammoCount -= 1;
                 ammoIndicatorFill = ammoCount / 15f;
                 //Debug.Log("Fill: " + ammoIndicatorFill);
                 uiManager.UpdateAmmoCount(ammoCount);
                 uiManager.UpdateAmmoCountIndicator(ammoIndicatorFill);
-            } else if(radiusBlastActive) {
+            } else if (radiusBlastActive) {
                 //Debug.Log("Fire Radius Blast");
                 Instantiate(radiusBlastPrefab, spawnPosition1, Quaternion.identity);
+            } else if (misslePowerUpActive) {
+                //Debug.Log("Missle Power Up Active");
+                missleStartPosition = new Vector3(transform.position.x + missleLaunchX, transform.position.y - .65f, 0);
+                Instantiate(misslePrefab, missleStartPosition, Quaternion.identity);
+                //swap sides for the next missle instantiation
+                missleLaunchX = missleLaunchX * -1;
+
             } else {
                 Instantiate(laserPrefab, spawnPosition1, Quaternion.identity);
                 ammoCount -= 1;
@@ -303,6 +318,16 @@ public class Player : MonoBehaviour {
             //transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 5.5f), 0);
             //Can use this in lieu of the 2 if/else statements above
         }
+    }
+
+    public void MisslePowerUpActive() {
+        misslePowerUpActive = true;
+        StartCoroutine(PowerDownMisslePowerUp());
+    }
+
+    IEnumerator PowerDownMisslePowerUp() {
+        yield return new WaitForSeconds(5);
+        misslePowerUpActive = false;
     }
 
     public void RadiusBlastActive() {
