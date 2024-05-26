@@ -24,31 +24,51 @@ public class SpawnManager : MonoBehaviour {
     private GameManager gameManager;
     public int enemyCount;
     private float spawnDelay;
-    private float currentSpawnTime;
     private UIManager uiManager;
     private float previousSpawnPosition;
-    private bool enemyMaxReached;
-
+    private bool gameStarted;
 
     // Start is called before the first frame update
     void Start() {
         noOfEnemyVariants = enemyPrefab.Length;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         //uiManager = GameObject.Find("Canvas_UI").GetComponent<UIManager>();
-        enemyCount = 0;
+        //enemyCount = 0;
         uiManager = GameObject.Find("Canvas_UI").GetComponent<UIManager>();
         previousSpawnPosition = 0;
+
     }
 
     // Update is called once per frame
     void Update() {
         //Debug.Log("Wave: " + gameManager.waveNumber + "   Wave Timer: " + gameManager.waveTimer);
-       
-        if(enemyCount > 6) {
-            enemyMaxReached = true;
-            //pause spawning routine for 10 seconds
-        } 
+        Debug.Log("Enemy Count: " + enemyCount);
 
+        if(gameManager.waveTimer > 0) {
+            ManageWaveMessage();
+           
+        }
+    }
+
+    private void ManageWaveMessage() {
+        if (gameManager.waveNumber == 0) {
+            //For the first 20 seconds
+            //Wave 0, tell spawn manager to spawn an enemy once every 2-3 seconds
+            spawnDelay = Random.Range(2f, 3f);
+            uiManager.AlertIncomingWave(gameManager.waveNumber);
+        } else if (gameManager.waveNumber == 1) {
+            //Between 21-45 seconds, Wave 1, tell spawn manager to spawn an enemy once every 1-2 seconds
+            spawnDelay = Random.Range(2f, 2.5f);
+            uiManager.AlertIncomingWave(gameManager.waveNumber);
+        } else if (gameManager.waveNumber == 2) {
+            //Between 45 - 60 seconds, Wave 2, tell spawn manager to spawn an enemy once every .5 - 1 seconds
+            spawnDelay = Random.Range(1.5f, 2f);
+            uiManager.AlertIncomingWave(gameManager.waveNumber);
+        } else if (gameManager.waveNumber == 3) {
+            //continueSpawning = false;
+            uiManager.AlertIncomingWave(gameManager.waveNumber);
+            continueSpawning = false;
+        }
     }
 
     public void StartSpawning() {
@@ -57,41 +77,35 @@ public class SpawnManager : MonoBehaviour {
         StartCoroutine(SpawnEnemyMine());
     }
 
-    IEnumerator SpawnEnemyRoutine() {
+    public void UpdateEnemyCount(int inc) {
+        if(inc == 1) {
+            enemyCount += 1;
+        } else if (inc == -1) {
+            enemyCount -= 1;
+        } else {
+            Debug.Log("Improper value in argument (must use -1 or 1)");
+        }
 
+        if(enemyCount<0) {
+            enemyCount = 0;
+        }   
+    }
+
+    IEnumerator SpawnEnemyRoutine() {
         yield return new WaitForSeconds(2f);
         while (continueSpawning) {
             
             //Randomize enemy variant to spawn
-            //enemyInstance = Random.Range(0, noOfEnemyVariants); //Instantiates even distribution among all the variants
-            enemyInstance = GetRandomValue(); //this one returns enemy variant 0 with 37.5%, enemy variant 1 with 37.5% probability and enemy variant 2 with 25% probability
-            //Debug.Log("Enemy Instance: " + enemyInstance);
-
-            if(gameManager.waveNumber == 0) {
-                //For the first 20 seconds
-                //Wave 0, tell spawn manager to spawn an enemy once every 2-3 seconds
-                spawnDelay = Random.Range(2f, 3f);
-                uiManager.AlertIncomingWave(gameManager.waveNumber);
-            } else if (gameManager.waveNumber == 1) {
-                //Between 21-45 seconds, Wave 1, tell spawn manager to spawn an enemy once every 1-2 seconds
-                spawnDelay = Random.Range(1f, 1.5f);
-                uiManager.AlertIncomingWave(gameManager.waveNumber);
-            } else if (gameManager.waveNumber == 2) {
-                //Between 45 - 60 seconds, Wave 2, tell spawn manager to spawn an enemy once every .5 - 1 seconds
-                spawnDelay = Random.Range(.55f, 1f);
-                uiManager.AlertIncomingWave(gameManager.waveNumber);
-            } else if (gameManager.waveNumber == 3) {
-                //continueSpawning = false;
-                uiManager.AlertIncomingWave(gameManager.waveNumber);
-                continueSpawning = false;
-            }
+            //enemyInstance = Random.Range(0, noOfEnemyVariants); 
+            //Instantiates even distribution among all the variants
+            enemyInstance = GetRandomValue(); 
 
             Vector3 spawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
 
             //ensure proper distance between enemies so they are not spawned on top of each other
             float wingManDistance = Mathf.Abs(spawnPosition.x - previousSpawnPosition);
-            if(wingManDistance < 1.5f) {
-                float delta = 1.5f - wingManDistance;
+            if(wingManDistance < 2f) {
+                float delta = 2f - wingManDistance;
                 spawnPosition.x = spawnPosition.x + delta;
                 if(spawnPosition.x > 6) {
                     spawnPosition.x = 3f;
@@ -105,25 +119,11 @@ public class SpawnManager : MonoBehaviour {
             //Debug.Log("Previous: " + previousSpawnPosition + "   Current: " + spawnPosition.x);
          
             GameObject newEnemy = Instantiate(enemyPrefab[enemyInstance], spawnPosition, Quaternion.identity);
-            //enemyCount += 1;
-            Debug.Log("Enemy Count: " + enemyCount);
-            currentSpawnTime = Time.time;
 
             newEnemy.transform.parent = enemyContainer.transform;
 
             yield return new WaitForSeconds(spawnDelay);
             previousSpawnPosition = spawnPosition.x;
-            
-            //GameObject newEnemy = Instantiate(enemyPrefab[enemyInstance], spawnPosition, Quaternion.identity);
-            //enemyCount += 1;
-            //Debug.Log("Enemy Count: " + enemyCount);
-            //currentSpawnTime = Time.time;
-
-            //newEnemy.transform.parent = enemyContainer.transform;
-            
-            //yield return new WaitForSeconds(spawnDelay);
-            //previousSpawnPosition = spawnPosition.x;
-            //Debug.Log("Wave: " + gameManager.waveNumber + "  Time: " + gameManager.waveTimer);
         }
     }
 

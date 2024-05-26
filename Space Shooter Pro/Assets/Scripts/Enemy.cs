@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour {
         rightScreenNavPoint = GameObject.Find("RightScreenNavPoint");
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         firedEnemyLaser = false;
-        spawnManager.enemyCount += 1;
+        spawnManager.UpdateEnemyCount(1);
 
         evasionSpeed = 3;
         //yields -1 or 1. But, since executing in Update( ), make sure
@@ -211,7 +211,7 @@ public class Enemy : MonoBehaviour {
             }
 
             Instantiate(explosion, transform.position, Quaternion.identity);
-            spawnManager.enemyCount -= 1;
+            spawnManager.UpdateEnemyCount(-1);
             Destroy(this.gameObject);
         }
 
@@ -226,7 +226,7 @@ public class Enemy : MonoBehaviour {
                 player.UpdateScore(enemyValue);
             }
             Instantiate(explosion, transform.position, Quaternion.identity);
-            spawnManager.enemyCount -= 1;
+            spawnManager.UpdateEnemyCount(-1);
             Destroy(this.gameObject);
             
         }
