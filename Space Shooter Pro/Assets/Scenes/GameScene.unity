@@ -4135,6 +4135,7 @@ MonoBehaviour:
   - {fileID: 5270640154057438508, guid: 09d4ca8df0a3acc49a59662dad962671, type: 3}
   - {fileID: 232753273738806050, guid: a5987cf479a8fd34995447df282e90b2, type: 3}
   continueSpawning: 1
+  enemyCount: 0
 --- !u!1 &1851463993
 GameObject:
   m_ObjectHideFlags: 0

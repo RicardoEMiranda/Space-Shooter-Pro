@@ -22,11 +22,12 @@ public class SpawnManager : MonoBehaviour {
     private int noOfEnemyVariants;
     private int enemyInstance;
     private GameManager gameManager;
-    private int enemyCount;
+    public int enemyCount;
     private float spawnDelay;
     private float currentSpawnTime;
     private UIManager uiManager;
     private float previousSpawnPosition;
+    private bool enemyMaxReached;
 
 
     // Start is called before the first frame update
@@ -42,6 +43,11 @@ public class SpawnManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         //Debug.Log("Wave: " + gameManager.waveNumber + "   Wave Timer: " + gameManager.waveTimer);
+       
+        if(enemyCount > 6) {
+            enemyMaxReached = true;
+            //pause spawning routine for 10 seconds
+        } 
 
     }
 
@@ -96,16 +102,27 @@ public class SpawnManager : MonoBehaviour {
                 }
             }
             
-
             //Debug.Log("Previous: " + previousSpawnPosition + "   Current: " + spawnPosition.x);
+         
             GameObject newEnemy = Instantiate(enemyPrefab[enemyInstance], spawnPosition, Quaternion.identity);
-            enemyCount += 1;
+            //enemyCount += 1;
+            Debug.Log("Enemy Count: " + enemyCount);
             currentSpawnTime = Time.time;
 
             newEnemy.transform.parent = enemyContainer.transform;
-            
+
             yield return new WaitForSeconds(spawnDelay);
             previousSpawnPosition = spawnPosition.x;
+            
+            //GameObject newEnemy = Instantiate(enemyPrefab[enemyInstance], spawnPosition, Quaternion.identity);
+            //enemyCount += 1;
+            //Debug.Log("Enemy Count: " + enemyCount);
+            //currentSpawnTime = Time.time;
+
+            //newEnemy.transform.parent = enemyContainer.transform;
+            
+            //yield return new WaitForSeconds(spawnDelay);
+            //previousSpawnPosition = spawnPosition.x;
             //Debug.Log("Wave: " + gameManager.waveNumber + "  Time: " + gameManager.waveTimer);
         }
     }

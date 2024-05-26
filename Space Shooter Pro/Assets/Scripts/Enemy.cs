@@ -39,6 +39,7 @@ public class Enemy : MonoBehaviour {
         rightScreenNavPoint = GameObject.Find("RightScreenNavPoint");
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         firedEnemyLaser = false;
+        spawnManager.enemyCount += 1;
 
         evasionSpeed = 3;
         //yields -1 or 1. But, since executing in Update( ), make sure
@@ -142,7 +143,7 @@ public class Enemy : MonoBehaviour {
         if(player_ != null) {
             float yDelta = transform.position.y - player_.transform.position.y;
             if (yDelta < -1f && !firedEnemyLaser) {
-                Debug.Log("Enemy behind player");
+                //Debug.Log("Enemy behind player");
                 Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y + .65f, transform.position.z);
                 //Instantiate(enemyLaserPrefab, spawnPosition, Quaternion.identity);
                 GameObject backwardLaser = Instantiate(enemyLaserPrefab, spawnPosition, Quaternion.identity);
@@ -210,12 +211,14 @@ public class Enemy : MonoBehaviour {
             }
 
             Instantiate(explosion, transform.position, Quaternion.identity);
+            spawnManager.enemyCount -= 1;
             Destroy(this.gameObject);
         }
 
         //if other is Laser
         //Destroy this object
         if(other.transform.tag == "Laser" && !shieldActive) {
+          
             Destroy(other.gameObject);
 
             //If Enemy hit by laser, add +10 points to player score
@@ -223,6 +226,7 @@ public class Enemy : MonoBehaviour {
                 player.UpdateScore(enemyValue);
             }
             Instantiate(explosion, transform.position, Quaternion.identity);
+            spawnManager.enemyCount -= 1;
             Destroy(this.gameObject);
             
         }
