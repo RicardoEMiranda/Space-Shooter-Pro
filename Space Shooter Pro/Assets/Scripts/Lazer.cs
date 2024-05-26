@@ -11,17 +11,23 @@ public class Lazer : MonoBehaviour {
     [SerializeField]
     private bool isMissle;
 
+    [SerializeField]
+    private AudioSource audioSource1, audioSource2;
+
+    [SerializeField]
+    private AudioClip audioClip_missleLaunch, audioClip_missleThrusters;
+
+
     private GameObject enemyTarget;
     private Vector3 navigationVector;
     private float theta;
     private Quaternion missleRotationAngle;
     private float rotSpeed = 10f;
-    private float missleTimer;
+    public bool enemyDetected;
+    private Vector3 enemyLocation;
 
     void Start() {
-        enemyTarget = GameObject.FindWithTag("Enemy");
         theta = 0;
-        missleTimer = 0;
     }
 
     // Update is called once per frame
@@ -29,34 +35,29 @@ public class Lazer : MonoBehaviour {
  
         transform.Translate(Vector3.up * speed * Time.deltaTime);
 
-        if(transform.position.y > 8f) {
+        if(transform.position.y > 11f || transform.position.y < -11) {
             Destroy(this.gameObject);
         }
 
-        if(isMissle && enemyTarget != null) {
-            FindTarget();
+        //if(isMissle && enemyTarget != null) {
+        if(isMissle && enemyDetected) {
+            //Debug.Log("Detector message received");
+            SeekTarget();
         }
     }
 
-    private void FindTarget() {
-        missleTimer += Time.deltaTime;
-        if(missleTimer<=1.5f) {
-            navigationVector = enemyTarget.transform.position - transform.position;
-            theta = Mathf.Atan2(navigationVector.y, navigationVector.x) * Mathf.Rad2Deg - 90;
-            missleRotationAngle = Quaternion.AngleAxis(theta, new Vector3(0, 0, 1));
+    public void GetTelemetryData(Vector3 loc) {
+        enemyLocation = loc;
+        //Debug.Log("Enemy Location X: " + enemyLocation.x + " Location Y: " + enemyLocation.y);
+        navigationVector = enemyLocation - gameObject.transform.position;
+    }
 
-            if (navigationVector.magnitude > .1) {
-                transform.Translate(navigationVector.normalized * missleSpeed * Time.deltaTime);
-                transform.rotation = Quaternion.Slerp(transform.rotation, missleRotationAngle, Time.deltaTime * rotSpeed);
-            } else {
-                transform.Translate(navigationVector.normalized * missleSpeed * Time.deltaTime);
-            }
+    private void SeekTarget() {
 
-        } 
-
-        if (transform.position.y >10 || transform.position.y<-10) {
-            Destroy(this.gameObject);
-        }
+        theta = Mathf.Atan2(navigationVector.y, navigationVector.x) * Mathf.Rad2Deg - 90;
+        missleRotationAngle = Quaternion.AngleAxis(theta, new Vector3(0, 0, 1));
+        transform.Translate(navigationVector.normalized * missleSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, missleRotationAngle, Time.deltaTime * rotSpeed);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

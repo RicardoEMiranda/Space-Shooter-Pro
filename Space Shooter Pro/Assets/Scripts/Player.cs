@@ -326,7 +326,7 @@ public class Player : MonoBehaviour {
     }
 
     IEnumerator PowerDownMisslePowerUp() {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(20);
         misslePowerUpActive = false;
     }
 
