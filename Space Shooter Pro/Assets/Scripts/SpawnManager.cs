@@ -42,7 +42,7 @@ public class SpawnManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         //Debug.Log("Wave: " + gameManager.waveNumber + "   Wave Timer: " + gameManager.waveTimer);
-        Debug.Log("Enemy Count: " + enemyCount);
+        //Debug.Log("Enemy Count: " + enemyCount);
 
         if(gameManager.waveTimer > 0) {
             ManageWaveMessage();
