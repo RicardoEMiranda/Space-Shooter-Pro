@@ -27,6 +27,7 @@ public class SpawnManager : MonoBehaviour {
     private UIManager uiManager;
     private float previousSpawnPosition;
     private bool gameStarted;
+    private bool bossSpawned;
 
     // Start is called before the first frame update
     void Start() {
@@ -46,8 +47,15 @@ public class SpawnManager : MonoBehaviour {
 
         if(gameManager.waveTimer > 0) {
             ManageWaveMessage();
-           
         }
+
+        if(gameManager.waveNumber == 3 && !continueSpawning && !bossSpawned) {
+            Vector3 spawnPosition = new Vector3(0, 11, 0);
+            GameObject boss = Instantiate(enemyPrefab[3], spawnPosition, Quaternion.identity);
+            boss.transform.parent = enemyContainer.transform;
+            bossSpawned = true;
+        }
+
     }
 
     private void ManageWaveMessage() {
@@ -147,7 +155,7 @@ public class SpawnManager : MonoBehaviour {
     }
 
     IEnumerator SpawnEnemyMine() {
-        while (continueSpawning) {
+        while (continueSpawning && gameManager.waveNumber !=3) {
             float delay = Random.Range(7, 10);
             yield return new WaitForSeconds(delay);
             Vector3 powerUpSpawnPosition = new Vector3(Random.Range(-6f, 6f), 10, 0);
