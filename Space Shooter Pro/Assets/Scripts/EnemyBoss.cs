@@ -12,13 +12,12 @@ public class EnemyBoss : MonoBehaviour {
     private Vector3 startFightPosition;
     private bool startSequenceComplete;
     private float startPositionDelta;
-    private float startPositionDuration;
     private float stopWatchTime;
     private float time;
-    private bool beganStartRoutine;
     private int bossHealth;
     private bool shieldActive;
     private int shieldStrength;
+    
 
 
 
@@ -32,7 +31,6 @@ public class EnemyBoss : MonoBehaviour {
         startPositionDelta = Mathf.Abs(startFightPosition.y - transform.position.y);
         stopWatchTime = 0;
         time = 0;
-        startPositionDuration = 4f;
 
         bossHealth = 5;
         shieldActive = true;
@@ -42,21 +40,8 @@ public class EnemyBoss : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        //pause for 4 seconds before starting to move into position
-        //after the 4 seconds move to the startFightPosition
-        startPositionDelta = Mathf.Abs(startFightPosition.y - transform.position.y);
-        //Debug.Log("Position Delta: " + startPositionDelta);
-        time = DelayTimer(5);
-        
-        if(time <= 4) {
-            transform.position = spawnPosition;
-        } else if (time > 4 && startPositionDelta > .1) {
-            transform.Translate(Vector3.down * 2 * Time.deltaTime);
-        } else if(time > 4 & startPositionDelta < .1) {
-            transform.position = startFightPosition;
-        } else {
-            Debug.Log("Start Sequence exception");
-        }
+        MoveIntoInitialPosition();
+        AggressiveAttack();
 
         if(shieldStrength <= 0) {
             shield.SetActive(false);
@@ -69,12 +54,58 @@ public class EnemyBoss : MonoBehaviour {
 
     }
 
+    private void AggressiveAttack() {
+        if(startSequenceComplete) {
+            //Debug.Log("Start Sequence Complete, start aggressive attack");
+            
+        }
+    }
+
+    private void MoveIntoInitialPosition() {
+        if(!startSequenceComplete) {
+            //pause for 4 seconds before starting to move into position
+            //after the 4 seconds move to the startFightPosition
+            startPositionDelta = Mathf.Abs(startFightPosition.y - transform.position.y);
+            //Debug.Log("Position Delta: " + startPositionDelta);
+            time = DelayTimer();
+
+            if (time <= 4) {
+                transform.position = spawnPosition;
+            } else if (time > 4 && startPositionDelta > .1) {
+                transform.Translate(Vector3.down * 2 * Time.deltaTime);
+            } else if (time > 4 & startPositionDelta < .1) {
+                transform.position = startFightPosition;
+                startSequenceComplete = true;
+            } else {
+                Debug.Log("Start Sequence exception");
+            }
+            Debug.Log("Time: " + time);
+        }
+        
+    }
+
    
 
-    private float DelayTimer(float delay) {
+    private float DelayTimer() {
         stopWatchTime += Time.deltaTime;
         
         return stopWatchTime;
+    }
+
+    private void DamagePlayer(Collider2D obj) {
+        //damage Player
+        Player player = obj.transform.GetComponent<Player>();
+
+        //null check that the Player componet on the other.transform existis
+        if (player == null) {
+            Debug.Log("No Player Object Detected");
+        }
+
+        if (player != null) {
+            //Debug.Log("Player collision detected.");
+            player.TakeDamage();
+            //player.UpdateScore(enemyValue);
+        }
     }
     
 
@@ -82,6 +113,7 @@ public class EnemyBoss : MonoBehaviour {
         
         if(other.tag == "Laser" && shieldActive) {
             //Debug.Log("Hit with Laser");
+            Destroy(other.gameObject);
             shieldStrength -= 1;
             Vector3 explosionPosition = new Vector3(other.transform.position.x, transform.position.y -1f, transform.position.z);
             Instantiate(shieldExplosion, explosionPosition, Quaternion.identity);
@@ -90,10 +122,12 @@ public class EnemyBoss : MonoBehaviour {
             shieldStrength -= 1;
             Vector3 explosionPosition = new Vector3(transform.position.x, transform.position.y -1f, transform.position.z);
             Instantiate(shieldExplosion, explosionPosition, Quaternion.identity);
+            DamagePlayer(other);
         }
 
         if (other.tag == "Laser" && !shieldActive) {
             //Debug.Log("Hit with Laser");
+            Destroy(other.gameObject);
             bossHealth -= 1;
             Vector3 explosionPosition = new Vector3(other.transform.position.x, transform.position.y, transform.position.z);
             Instantiate(enemyExplosion, explosionPosition, Quaternion.identity);
@@ -102,6 +136,7 @@ public class EnemyBoss : MonoBehaviour {
             bossHealth -= 1;
             Vector3 explosionPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
             Instantiate(enemyExplosion, explosionPosition, Quaternion.identity);
+            DamagePlayer(other);
         }
 
     }
