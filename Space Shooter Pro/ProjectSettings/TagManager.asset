@@ -9,6 +9,7 @@ TagManager:
   - Asteroid
   - EnemyLaser
   - RadiusBlastProton
+  - BossLaser
   layers:
   - Default
   - TransparentFX

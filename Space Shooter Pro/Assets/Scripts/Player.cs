@@ -408,6 +408,13 @@ public class Player : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
+        
+        if(other.tag == "BossLaser") {
+            Vector3 explosionPosition = new Vector3(transform.position.x - .25f, transform.position.y, transform.position.z);
+            Instantiate(explosion, explosionPosition, Quaternion.identity);
+            TakeDamage();
+        }
+        
         //Debug.Log("Collision w/Enemy Laser");
         if(other.transform.tag == "EnemyLaser") {
             Vector3 explosionPosition = new Vector3(transform.position.x - .25f, transform.position.y, transform.position.z);
