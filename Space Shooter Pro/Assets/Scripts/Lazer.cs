@@ -63,7 +63,7 @@ public class Lazer : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other) {
         
         if(other.transform.tag == "Enemy") {
-            Debug.Log("Enemy hit from other");
+            //Debug.Log("Enemy hit from other");
             Destroy(this.gameObject); 
         }
     }

@@ -26,6 +26,7 @@ public class EnemyBoss : MonoBehaviour {
     private int roundTrips;
     private int attackSequence;
     private int sequence2RoundTrips;
+    private bool deathSequenceStarted;
 
 
 
@@ -40,9 +41,9 @@ public class EnemyBoss : MonoBehaviour {
         stopWatchTime = 0;
         time = 0;
 
-        bossHealth = 5;
+        bossHealth = 10;
         shieldActive = true;
-        shieldStrength = 5;
+        shieldStrength = 10;
 
         leftPositionLocation = new Vector3(-4.1f, 5, 0);
         centerPositionLocation = new Vector3(0, 5, 0);
@@ -57,13 +58,14 @@ public class EnemyBoss : MonoBehaviour {
 
 
         MoveIntoInitialPosition();
-
-        if(attackSequence == 1) {
+        Debug.Log("Boss health" + bossHealth);
+        Debug.Log("Shield Strength" + shieldStrength);
+        if(attackSequence == 1 && !deathSequenceStarted) {
             AttackSequence1();
-        } else if (attackSequence == 2 && sequence2RoundTrips <=5) {
+        } else if (attackSequence == 2 && sequence2RoundTrips <=5 && !deathSequenceStarted) {
             bossLaser.SetActive(true);
             AttackSequence2();
-        } else if(sequence2RoundTrips > 5) {
+        } else if(sequence2RoundTrips > 5 && !deathSequenceStarted) {
             sequence2RoundTrips = 0;
             attackSequence = 1;
             fired = false;
@@ -75,7 +77,7 @@ public class EnemyBoss : MonoBehaviour {
         if(roundTrips >= 3) {
             attackSequence = 2;
             roundTrips = 0;
-            Debug.Log("Attack Sequence: " + attackSequence);
+            //Debug.Log("Attack Sequence: " + attackSequence);
         }
         
         if(shieldStrength <= 0) {
@@ -84,9 +86,44 @@ public class EnemyBoss : MonoBehaviour {
             attackCycleStart = true;
         }
 
-        if(bossHealth <= 0) {
-            Debug.Log("Boss Dead");
+        if(bossHealth <= 0 && !deathSequenceStarted) {
+            //Debug.Log("Boss Dead");
+            bossLaser.SetActive(false);
+            deathSequenceStarted = true;
+            goCenter = false;
+            goLeft = false;
+            goRight = false;
+            StartCoroutine(BossExplosionSequence());
         }
+
+    }
+
+    IEnumerator BossExplosionSequence() {
+        bossLaser.SetActive(false);
+        Vector3 explosionPosition = new Vector3(transform.position.x, transform.position.y - .65f, 0);
+        Instantiate(enemyExplosion, explosionPosition, Quaternion.identity);
+        yield return new WaitForSeconds(1);
+
+        Vector3 explosionPosition2 = new Vector3(transform.position.x - .5f, transform.position.y + .65f, 0);
+        Instantiate(enemyExplosion, explosionPosition2, Quaternion.identity);
+        yield return new WaitForSeconds(1);
+
+        Vector3 explosionPosition3 = new Vector3(transform.position.x + .5f, transform.position.y + .65f, 0);
+        Instantiate(enemyExplosion, explosionPosition3, Quaternion.identity);
+        yield return new WaitForSeconds(1);
+
+        Instantiate(enemyExplosion, explosionPosition, Quaternion.identity);
+        yield return new WaitForSeconds(.33f);
+
+        Instantiate(enemyExplosion, explosionPosition2, Quaternion.identity);
+        yield return new WaitForSeconds(.33f);
+
+        Instantiate(enemyExplosion, explosionPosition3, Quaternion.identity);
+        yield return new WaitForSeconds(.33f);
+        Instantiate(enemyExplosion, explosionPosition, Quaternion.identity);
+        Instantiate(enemyExplosion, explosionPosition2, Quaternion.identity);
+        Instantiate(enemyExplosion, explosionPosition3, Quaternion.identity);
+        Destroy(this.gameObject);
 
     }
 
@@ -154,7 +191,7 @@ public class EnemyBoss : MonoBehaviour {
             } else if (Mathf.Abs(positionDelta) < .1) {
                 transform.position = centerPositionLocation;
                 sequence2RoundTrips += 1;
-                Debug.Log("Sequence 2 Round Trips: " + sequence2RoundTrips);
+                //Debug.Log("Sequence 2 Round Trips: " + sequence2RoundTrips);
                 if (direction == -1) {
                     StartCoroutine(PauseAttackCenter(true, false, 0));
                 }
@@ -180,7 +217,7 @@ public class EnemyBoss : MonoBehaviour {
             StartCoroutine(PauseAttackCenter(true, false, 3));
             StartCoroutine(FireLaser());
             roundTrips += 1;
-            Debug.Log("Round Trip: " + roundTrips);
+            //Debug.Log("Round Trip: " + roundTrips);
         }
 
         if (goLeft && firingSequenceFinished) {
