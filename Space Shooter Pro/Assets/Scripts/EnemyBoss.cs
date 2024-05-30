@@ -27,6 +27,7 @@ public class EnemyBoss : MonoBehaviour {
     private int attackSequence;
     private int sequence2RoundTrips;
     private bool deathSequenceStarted;
+    private GameManager gameManager;
 
 
 
@@ -51,6 +52,7 @@ public class EnemyBoss : MonoBehaviour {
         roundTrips = 0;
         attackSequence = 1;
         sequence2RoundTrips = 0;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -58,8 +60,8 @@ public class EnemyBoss : MonoBehaviour {
 
 
         MoveIntoInitialPosition();
-        Debug.Log("Boss health" + bossHealth);
-        Debug.Log("Shield Strength" + shieldStrength);
+        //Debug.Log("Boss health" + bossHealth);
+        //Debug.Log("Shield Strength" + shieldStrength);
         if(attackSequence == 1 && !deathSequenceStarted) {
             AttackSequence1();
         } else if (attackSequence == 2 && sequence2RoundTrips <=5 && !deathSequenceStarted) {
@@ -123,7 +125,8 @@ public class EnemyBoss : MonoBehaviour {
         Instantiate(enemyExplosion, explosionPosition, Quaternion.identity);
         Instantiate(enemyExplosion, explosionPosition2, Quaternion.identity);
         Instantiate(enemyExplosion, explosionPosition3, Quaternion.identity);
-        Destroy(this.gameObject);
+        gameManager.wonGameState = true;
+        Destroy(this.gameObject, .25f);
 
     }
 

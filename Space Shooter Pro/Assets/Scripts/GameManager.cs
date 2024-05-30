@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
     public int waveNumber;
     public bool restartState;
     private bool asteroidDestroyed;
+    public bool wonGameState;
+    private UIManager uiManager;
 
     // Start is called before the first frame update
     void Start() {
@@ -20,16 +22,32 @@ public class GameManager : MonoBehaviour {
         waveTimer = 0;
         waveNumber = 0;
         restartState = false;
+        wonGameState = false;
+        uiManager = GameObject.Find("Canvas_UI").GetComponent<UIManager>();
+        if(uiManager == null) {
+            Debug.Log("UI Manager not found");
+        }
+        if(uiManager != null) {
+            Debug.Log("UI Manager found");
+        }
 
+     
         if(spawnManager == null) {
             Debug.Log("Spawn Manager object not found");
         }
+
     }
 
     // Update is called once per frame
     void Update() {
 
         ManageEnemyWaves();
+
+        if (wonGameState) {
+            Debug.Log("Won Game");
+            uiManager.TurnOnGameOverMessage();
+            wonGameState = false;
+        }
 
     }
 
