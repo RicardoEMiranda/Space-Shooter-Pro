@@ -122,7 +122,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2196413419421584664
 Transform:
   m_ObjectHideFlags: 0
@@ -145,7 +145,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737353986858247172}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -171,7 +171,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737353986858247172}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -223,8 +223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f12bec4f322ab1341a4bec1966237431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fire: 0
-  laser: {fileID: 8229026512159777307}
+  fire: 1
+  laserContainer: {fileID: 8229026512159777307}
+  laserColliderLeft: {fileID: 2712255909364107521}
+  laserColliderRight: {fileID: 5618090841859435941}
+  audioSource_laserBeamRay: {fileID: 1681400157}
+  audioSource_laserBeam: {fileID: 1681400158}
 --- !u!82 &1681400157
 AudioSource:
   m_ObjectHideFlags: 0

@@ -52,7 +52,7 @@ public class SpawnManager : MonoBehaviour {
         if(gameManager.waveNumber == 3 && !continueSpawning && !bossSpawned) {
             Vector3 spawnPosition = new Vector3(0, 11, 0);
             GameObject boss = Instantiate(enemyPrefab[3], spawnPosition, Quaternion.identity);
-            boss.transform.parent = enemyContainer.transform;
+            //boss.transform.parent = enemyContainer.transform;
             bossSpawned = true;
         }
 

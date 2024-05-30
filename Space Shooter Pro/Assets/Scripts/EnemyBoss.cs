@@ -25,6 +25,7 @@ public class EnemyBoss : MonoBehaviour {
     private int direction;
     private int roundTrips;
     private int attackSequence;
+    private int sequence2RoundTrips;
 
 
 
@@ -48,77 +49,39 @@ public class EnemyBoss : MonoBehaviour {
         rightPositionLocation = new Vector3(4.1f, 5, 0);
         roundTrips = 0;
         attackSequence = 1;
+        sequence2RoundTrips = 0;
     }
 
     // Update is called once per frame
     void Update() {
 
-        
 
         MoveIntoInitialPosition();
 
-        if(startSequenceComplete && !fired && goCenter) {
-            StartCoroutine(PauseAttackCenter(true, false));
-            StartCoroutine(FireLaser());
-            roundTrips += 1;
-            Debug.Log("Round Trip: " + roundTrips);
+        if(attackSequence == 1) {
+            AttackSequence1();
+        } else if (attackSequence == 2 && sequence2RoundTrips <=5) {
+            bossLaser.SetActive(true);
+            AttackSequence2();
+        } else if(sequence2RoundTrips > 5) {
+            sequence2RoundTrips = 0;
+            attackSequence = 1;
+            fired = false;
+            goCenter = true;
         }
 
-        if(goLeft && firingSequenceFinished) {
-            positionDelta = transform.position.x - leftPositionLocation.x;
-            if(positionDelta > .1) {
-                transform.Translate(new Vector3(-1, 0, 0) * 3 * Time.deltaTime);
-            } else if(positionDelta < .1) {
-                transform.position = leftPositionLocation;
-                StartCoroutine(PauseAttackLeft());
-                StartCoroutine(FireLaser());
-            }
-        }
-
-        if(goCenter && firingSequenceFinished) {
-            //Debug.Log("Go Center");
-            
-            positionDelta = transform.position.x - centerPositionLocation.x;
-            if(Mathf.Abs(positionDelta) > .1) {
-                transform.Translate(new Vector3(direction, 0, 0) * 3 * Time.deltaTime);
-            } else if(Mathf.Abs(positionDelta) <.1) {
-                transform.position = centerPositionLocation;
-                roundTrips += 1;
-                Debug.Log("Round Trip: " + roundTrips);
-                if (direction == -1) {
-                    StartCoroutine(PauseAttackCenter(true, false));
-                } 
-                if(direction == 1) {
-                    StartCoroutine(PauseAttackCenter(false, true));
-                }
-                StartCoroutine(FireLaser());
-            }
-        }
-
-        if(goRight && firingSequenceFinished) {
-            positionDelta = transform.position.x - rightPositionLocation.x;
-            if(Mathf.Abs(positionDelta) > .1) {
-                transform.Translate(new Vector3(1, 0, 0) * 3 * Time.deltaTime);
-            }  else if (Mathf.Abs(positionDelta) < .1) {
-                transform.position = rightPositionLocation;
-                StartCoroutine(PauseAttackRight());
-                StartCoroutine(FireLaser());
-            }
-        }
 
        
         if(roundTrips >= 3) {
             attackSequence = 2;
+            roundTrips = 0;
             Debug.Log("Attack Sequence: " + attackSequence);
         }
         
-        
-
         if(shieldStrength <= 0) {
             shield.SetActive(false);
             shieldActive = false;
             attackCycleStart = true;
-            goCenter = true;
         }
 
         if(bossHealth <= 0) {
@@ -128,32 +91,32 @@ public class EnemyBoss : MonoBehaviour {
     }
 
 
-    IEnumerator PauseAttackCenter(bool leftValue, bool rightValue) {
+    IEnumerator PauseAttackCenter(bool leftValue, bool rightValue, int delay) {
         goCenter = false;
         fired = false;
         started = false;
         firingSequenceFinished = false;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(delay);
         goLeft = leftValue;
         goRight = rightValue;
     }
 
-    IEnumerator PauseAttackLeft() {
+    IEnumerator PauseAttackLeft(int delay) {
         goLeft = false;
         fired = false;
         started = false;
         firingSequenceFinished = false;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(delay);
         goCenter = true;
         direction = 1;
     }
 
-    IEnumerator PauseAttackRight() {
+    IEnumerator PauseAttackRight(int delay) {
         goRight = false;
         fired = false;
         started = false;
         firingSequenceFinished = false;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(delay);
         goCenter = true;
         direction = -1;
     }
@@ -170,7 +133,99 @@ public class EnemyBoss : MonoBehaviour {
             firingSequenceFinished = true;
         }
     }
-    
+
+
+    private void AttackSequence2() {
+        if (goLeft) {
+            positionDelta = transform.position.x - leftPositionLocation.x;
+            if (positionDelta > .1) {
+                transform.Translate(new Vector3(-1, 0, 0) * 4 * Time.deltaTime);
+            } else if (positionDelta < .1) {
+                transform.position = leftPositionLocation;
+                StartCoroutine(PauseAttackLeft(0));
+            }
+        }
+
+        if (goCenter) {
+
+            positionDelta = transform.position.x - centerPositionLocation.x;
+            if (Mathf.Abs(positionDelta) > .1) {
+                transform.Translate(new Vector3(direction, 0, 0) * 4 * Time.deltaTime);
+            } else if (Mathf.Abs(positionDelta) < .1) {
+                transform.position = centerPositionLocation;
+                sequence2RoundTrips += 1;
+                Debug.Log("Sequence 2 Round Trips: " + sequence2RoundTrips);
+                if (direction == -1) {
+                    StartCoroutine(PauseAttackCenter(true, false, 0));
+                }
+                if (direction == 1) {
+                    StartCoroutine(PauseAttackCenter(false, true, 0));
+                }
+            }
+        }
+
+        if (goRight) {
+            positionDelta = transform.position.x - rightPositionLocation.x;
+            if (Mathf.Abs(positionDelta) > .1) {
+                transform.Translate(new Vector3(1, 0, 0) * 4 * Time.deltaTime);
+            } else if (Mathf.Abs(positionDelta) < .1) {
+                transform.position = rightPositionLocation;
+                StartCoroutine(PauseAttackRight(0));
+            }
+        }
+    }
+
+    private void AttackSequence1() {
+        if (startSequenceComplete && !fired && goCenter) {
+            StartCoroutine(PauseAttackCenter(true, false, 3));
+            StartCoroutine(FireLaser());
+            roundTrips += 1;
+            Debug.Log("Round Trip: " + roundTrips);
+        }
+
+        if (goLeft && firingSequenceFinished) {
+            positionDelta = transform.position.x - leftPositionLocation.x;
+            if (positionDelta > .1) {
+                transform.Translate(new Vector3(-1, 0, 0) * 3 * Time.deltaTime);
+            } else if (positionDelta < .1) {
+                transform.position = leftPositionLocation;
+                StartCoroutine(PauseAttackLeft(3));
+                StartCoroutine(FireLaser());
+            }
+        }
+
+        if (goCenter && firingSequenceFinished) {
+            //Debug.Log("Go Center");
+
+            positionDelta = transform.position.x - centerPositionLocation.x;
+            if (Mathf.Abs(positionDelta) > .1) {
+                transform.Translate(new Vector3(direction, 0, 0) * 3 * Time.deltaTime);
+            } else if (Mathf.Abs(positionDelta) < .1) {
+                transform.position = centerPositionLocation;
+                roundTrips += 1;
+                Debug.Log("Round Trip: " + roundTrips);
+                if (direction == -1) {
+                    StartCoroutine(PauseAttackCenter(true, false, 3));
+                }
+                if (direction == 1) {
+                    StartCoroutine(PauseAttackCenter(false, true, 3));
+                }
+                StartCoroutine(FireLaser());
+            }
+        }
+
+        if (goRight && firingSequenceFinished) {
+            positionDelta = transform.position.x - rightPositionLocation.x;
+            if (Mathf.Abs(positionDelta) > .1) {
+                transform.Translate(new Vector3(1, 0, 0) * 3 * Time.deltaTime);
+            } else if (Mathf.Abs(positionDelta) < .1) {
+                transform.position = rightPositionLocation;
+                StartCoroutine(PauseAttackRight(3));
+                StartCoroutine(FireLaser());
+            }
+        }
+    }
+
 
     private void MoveIntoInitialPosition() {
         if(!startSequenceComplete) {
