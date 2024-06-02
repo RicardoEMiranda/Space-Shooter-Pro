@@ -293,6 +293,10 @@ public class Player : MonoBehaviour {
             speedBoost = 1;
             text_TestData.text = "Left Shift Button Released.";
         }
+
+        if(speedActive) {
+            transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * 4f);
+        }
         transform.Translate(new Vector3(inputHorizontal, inputVertical, 0) * Time.deltaTime * speed * speedBoost);
 
 
